@@ -1,5 +1,15 @@
 .App {
   text-align: center;
+  min-height: 100% !important;
+  position: relative;
+}
+body { min-height: 100vh; }
+
+.body{
+  font-family: 'Abril Fatface', cursive;
+}
+.css-1c35hjw-MuiPaper-root-MuiAccordion-root::before{
+  background-color: white !important;
 }
 
 .App-logo {
