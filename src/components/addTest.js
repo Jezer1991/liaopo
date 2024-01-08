@@ -35,7 +35,7 @@ class AddTest extends React.Component {
     componentWillMount() {
 
         setTimeout(() => {
-            fetch(`${conf.API_LOCAL}bloques`)
+            fetch(`${conf.API}bloques`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -44,7 +44,7 @@ class AddTest extends React.Component {
                     });
                 })
 
-            fetch(`${conf.API_LOCAL}tipoTest`)
+            fetch(`${conf.API}tipoTest`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -54,7 +54,7 @@ class AddTest extends React.Component {
                 })
 
             if (this.state.id_bloque === undefined) {
-                fetch(`${conf.API_LOCAL}tests`)
+                fetch(`${conf.API}tests`)
                     .then(data => {
                         return data.json();
                     }).then(data => {
@@ -64,7 +64,7 @@ class AddTest extends React.Component {
                         });
                     })
             } else {
-                fetch(`${conf.API_LOCAL}tests/${this.state.id_bloque}`)
+                fetch(`${conf.API}tests/${this.state.id_bloque}`)
                     .then(data => {
                         return data.json();
                     }).then(data => {
@@ -73,7 +73,7 @@ class AddTest extends React.Component {
                         });
                     })
 
-                fetch(`${conf.API_LOCAL}bloque/${this.state.id_bloque}`)
+                fetch(`${conf.API}bloque/${this.state.id_bloque}`)
                     .then(data => {
                         return data.json();
                     }).then(data => {
@@ -97,7 +97,7 @@ class AddTest extends React.Component {
             confirmButtonText: 'Borrar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${conf.API_LOCAL}delete/test/${id}`)
+                axios.delete(`${conf.API}delete/test/${id}`)
                     .then(data => {
                         if (data.status === 200) {
                             Swal.fire({
@@ -125,7 +125,7 @@ class AddTest extends React.Component {
 
     handleChange(e) {
         setTimeout(() => {
-            fetch(`${conf.API_LOCAL}tema/${e.target.value}`)
+            fetch(`${conf.API}tema/${e.target.value}`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -171,7 +171,7 @@ class AddTest extends React.Component {
                         : ""
                     }
 
-                    <form action={`${conf.API_LOCAL}save/test`} method="post">
+                    <form action={`${conf.API}save/test`} method="post">
                         <input id="prevPage" name="prevPage" type="hidden" value={window.location.href} />
                         <div style={{ width: "30%", margin: "0px auto", textAlign: "center" }} className="mt-5 row">
 

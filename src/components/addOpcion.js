@@ -22,7 +22,7 @@ class AddOpcion extends React.Component {
     }
     componentWillMount() {
         setTimeout(() => {
-            fetch(`${conf.API_LOCAL}opcion/${this.state.id_pregunta}`)
+            fetch(`${conf.API}opcion/${this.state.id_pregunta}`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -30,7 +30,7 @@ class AddOpcion extends React.Component {
                         opciones: data
                     });
                 })
-            fetch(`${conf.API_LOCAL}pregunta/${this.state.id_pregunta}`)
+            fetch(`${conf.API}pregunta/${this.state.id_pregunta}`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -51,7 +51,7 @@ class AddOpcion extends React.Component {
             confirmButtonText: 'Borrar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${conf.API_LOCAL}delete/opcion/${id}`)
+                axios.delete(`${conf.API}delete/opcion/${id}`)
                     .then(data => {
                         if (data.status === 200) {
                             Swal.fire({
@@ -93,7 +93,7 @@ class AddOpcion extends React.Component {
                         </Link>
                     </strong>
                 </Alert>
-                <form action={`${conf.API_LOCAL}save/opcion`} method="post">
+                <form action={`${conf.API}save/opcion`} method="post">
                     <input id="id_pregunta" name="id_pregunta" type="hidden" value={this.state.id_pregunta} />
                     <input id="prevPage" name="prevPage" type="hidden" value={window.location.href} />
                     <div style={{ width: "30%", margin: "0px auto", textAlign: "center" }} className="mt-5 row">

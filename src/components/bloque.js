@@ -24,7 +24,7 @@ class Bloque extends React.Component {
     }
     componentWillMount() {
         setTimeout(() => {
-            fetch(`${conf.HOST}bloques`)
+            fetch(`${conf.API}bloques`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -33,7 +33,7 @@ class Bloque extends React.Component {
                     });
                 })
 
-            fetch(`${conf.HOST}tests`)
+            fetch(`${conf.API}tests`)
                 .then(data => {
                     return data.json();
                 }).then(data => {

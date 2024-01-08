@@ -18,7 +18,7 @@ class AddBloque extends React.Component {
     }
     componentWillMount() {
         setTimeout(() => {
-            fetch(`${conf.API_LOCAL}bloques`)
+            fetch(`${conf.API}bloques`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -41,7 +41,7 @@ class AddBloque extends React.Component {
             confirmButtonText: 'Borrar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${conf.API_LOCAL}delete/bloque/${id}`)
+                axios.delete(`${conf.API}delete/bloque/${id}`)
                     .then(data => {
                         if (data.status === 200) {
                             Swal.fire({
@@ -71,7 +71,7 @@ class AddBloque extends React.Component {
     render() {
         return (
             <div>
-                <form action={`${conf.API_LOCAL}save/bloque`} method="post">
+                <form action={`${conf.API}save/bloque`} method="post">
                     <input id="prevPage" name="prevPage" type="hidden" value={window.location.href} />
                     <div style={{ width: "30%", margin: "0px auto", textAlign: "center" }} className="mt-5 row">
                         <TextField
