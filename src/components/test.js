@@ -67,8 +67,10 @@ class Test extends React.Component {
     mostrarRespuesta(a) {
         let al = document.getElementById(a)
         if (getComputedStyle(al).backgroundColor === "rgb(209, 231, 221)") {
+            console.log("entre en el if");
             al.style.backgroundColor = "rgb(207, 226, 255)";
         } else {
+            console.log("entre en el else");
             al.style.backgroundColor = "rgb(209, 231, 221)";
         }
     }
