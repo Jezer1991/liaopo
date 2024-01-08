@@ -1,8 +1,9 @@
 import React from "react";
 
-import { Card, Accordion, Alert } from "react-bootstrap";
+import { Card, Accordion, Alert, Button } from "react-bootstrap";
 import { CircularProgress, Box, Link, Breadcrumbs, Typography, Tooltip } from '@mui/material';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import * as conf from '../conf';
 
 class Test extends React.Component {
@@ -67,12 +68,12 @@ class Test extends React.Component {
     mostrarRespuesta(a) {
         let al = document.getElementById(a)
         console.log(al);
-        if (getComputedStyle(al).backgroundColor === "rgb(209, 231, 221)") {
+        if (al.style.display === "none") {
             console.log("entre en el if");
-            al.style.backgroundColor = "rgb(207, 226, 255)";
+            al.style.display = "block";
         } else {
             console.log("entre en el else");
-            al.style.backgroundColor = "rgb(209, 231, 221)";
+            al.style.display = "none";
         }
     }
     render() {
@@ -110,19 +111,23 @@ class Test extends React.Component {
                                 <Accordion.Body>
                                     <Card className="mb-2">
                                         <Card.Header><strong className="mr-5">{`Año ${pregunta.annho}`}</strong>
-
-                                            <Tooltip title="Ver la respuesta correcta" style={{ marginLeft: "10px", marginBottom: "10px" }}>
-                                                <TipsAndUpdatesIcon  color="success" onClick={(e) => { this.mostrarRespuesta(`RP${i}`) }} />
-                                            </Tooltip>
                                         </Card.Header>
                                         <Card.Body>{pregunta.nombre}
-
                                         </Card.Body>
+                                        <Button onClick={(e) => { this.mostrarRespuesta(`RP${i}`) }}>
+                                            <Tooltip title="Ver la respuesta correcta" style={{ marginLeft: "10px", marginBottom: "10px" }}>
+                                                <TipsAndUpdatesIcon   />
+                                            </Tooltip>
+                                        </Button>
                                     </Card>
-                                    {this.state.opciones.filter(o => o.id_pregunta === pregunta.id).map((opcion, i) => (
-                                        opcion.opcionCorrecta === 1
-                                            ? <Alert id={`RP${i}`} key={i}>{opcion.opcion}</Alert>
-                                            : <Alert key={i}>{opcion.opcion}</Alert>
+                                    {this.state.opciones.filter(o => o.id_pregunta === pregunta.id).map((opcion, e) => (
+                                        <React.Fragment>
+
+                                            {opcion.opcionCorrecta === 1
+                                                ? <Alert key={e}>{opcion.opcion} <CheckCircleOutlineIcon id={`RP${i}`} style={{ display: "none" }} /></Alert>
+                                                : <Alert key={e}>{opcion.opcion}</Alert>}
+                                        </React.Fragment>
+
                                     ))}
                                 </Accordion.Body>
                             </Accordion.Item>
