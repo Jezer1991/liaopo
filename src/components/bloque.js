@@ -24,16 +24,18 @@ class Bloque extends React.Component {
     }
     componentWillMount() {
         setTimeout(() => {
-            fetch(`http://291b-83-34-82-170.ngrok-free.app/api/bloques`)
+            fetch(`${conf.HOST}bloques`)
                 .then(data => {
+                    console.log(data.json())
                     return data.json();
                 }).then(data => {
+                    console.log("hola",data);
                     this.setState({
                         bloques: data.result
                     });
                 })
 
-            fetch(`http://291b-83-34-82-170.ngrok-free.app/api/tests`)
+            fetch(`${conf.HOST}tests`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
