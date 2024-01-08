@@ -19,7 +19,6 @@ app.use(express.static(path.join(__dirname, dir + 'dbImagenes/kairos/productos')
 var server = app.listen(3001, () => {
     console.log("Opos-Jez running");
 });
-console.log(app);
 
 app.get('/api/tests', (req, res) => {
     const sql = "SELECT " +
@@ -99,8 +98,10 @@ app.get('/api/bloques', (req, res) => {
     const sql = "SELECT * FROM bloque";
     db.query(sql, async (err, result) => {
         if (err === null) {
-            res.send({ code: 201, result });
+            console.log(result);
+            res.send(result);
         } else {
+            console.log(result);
             res.send({ code: 202, err });
         }
     });
