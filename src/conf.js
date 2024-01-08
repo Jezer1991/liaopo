@@ -1,6 +1,6 @@
 
 export const local = "http://localhost/";
-export const HOST = "https://singular-blancmange-172248.netlify.app/:3001/";
+export const HOST = "https://291b-83-34-82-170.ngrok-free.app/api/";
 export const API = "http://kairosaccesorios.ddns.net:3001/api/";
 //export const API = "http://localhost:3001/api/";
 export const API_LOCAL = "http://localhost:3001/api/";
