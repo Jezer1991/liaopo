@@ -1,16 +1,16 @@
 import React from "react";
 import { Link as RouterLink } from 'react-router-dom';
-import { Link, Tooltip, CardActions, CardContent, CardMedia, Typography, CardActionArea, AccordionSummary, Accordion, AccordionDetails } from '@mui/material';
-import FindInPageIcon from '@mui/icons-material/FindInPage';
+import { Link, Tooltip, CardActions, CardContent, CardMedia, Typography, CardActionArea, AccordionSummary, Accordion, AccordionDetails, } from '@mui/material';
 import Card1 from '@mui/material/Card';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import NoHayDatos from "./nohaydatos";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
-
+import { Button } from "react-bootstrap";
 
 import 'react-multi-carousel/lib/styles.css';
 
 import * as conf from '../conf';
+
 
 
 class Bloque extends React.Component {
@@ -46,7 +46,7 @@ class Bloque extends React.Component {
     }
     render() {
         return (
-            this.state.bloques === undefined  || this.state.bloques.length <= 0  ?
+            this.state.bloques === undefined || this.state.bloques.length <= 0 ?
                 <React.Fragment>
                     <NoHayDatos message={"No hay bloques en este momento"} />
                 </React.Fragment>
@@ -86,9 +86,18 @@ class Bloque extends React.Component {
                                                     </CardContent>
                                                     <CardActions>
                                                         <Tooltip title="Ver test">
-                                                            <Link to={`/test/${test.id_test}`} color="secondary" underline="hover" component={RouterLink}>
-                                                                <FindInPageIcon />
-                                                            </Link>
+                                                            <Button style={{ width: "50%"}} variant="success">
+                                                                <Link to={`/test/${test.id_test}`}  style={{color:"white", testDecoration: "none" }}component={RouterLink}>
+                                                                    Ver test
+                                                                </Link>
+                                                            </Button>
+                                                        </Tooltip>
+                                                        <Tooltip title="Realizar test" >
+                                                            <Button disabled style={{ width: "50%" }} variant="danger">
+                                                                <Link to={`/test/${test.id_test}`} style={{color:"white", testDecoration: "none" }} component={RouterLink}>
+                                                                    Realizar test
+                                                                </Link>
+                                                            </Button>
                                                         </Tooltip>
                                                     </CardActions>
                                                 </CardActionArea>
