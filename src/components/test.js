@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Card, Accordion, Alert, Button } from "react-bootstrap";
+import { Card, Accordion, Alert } from "react-bootstrap";
 import { CircularProgress, Box, Link, Breadcrumbs, Typography, Tooltip } from '@mui/material';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import * as conf from '../conf';
@@ -66,7 +66,6 @@ class Test extends React.Component {
     }
     mostrarRespuesta(a) {
         let al = document.getElementById(a)
-        const style = getComputedStyle(al).backgroundColor;
         if (getComputedStyle(al).backgroundColor === "rgb(209, 231, 221)") {
             al.style.backgroundColor = "rgb(207, 226, 255)";
         } else {
