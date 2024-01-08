@@ -33,7 +33,7 @@ class Bloque extends React.Component {
                     });
                 })
 
-            fetch(`${conf.API_LOCAL}tests`)
+            fetch(`${conf.HOST}tests`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
