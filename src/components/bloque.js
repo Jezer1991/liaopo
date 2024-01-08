@@ -26,10 +26,8 @@ class Bloque extends React.Component {
         setTimeout(() => {
             fetch(`${conf.HOST}bloques`)
                 .then(data => {
-                    console.log(data.json())
                     return data.json();
                 }).then(data => {
-                    console.log("hola",data);
                     this.setState({
                         bloques: data.result
                     });

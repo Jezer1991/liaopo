@@ -98,10 +98,8 @@ app.get('/api/bloques', (req, res) => {
     const sql = "SELECT * FROM bloque";
     db.query(sql, async (err, result) => {
         if (err === null) {
-            console.log(result);
-            res.send(result);
+            res.send({ code: 201, result });
         } else {
-            console.log(result);
             res.send({ code: 202, err });
         }
     });
