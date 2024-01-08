@@ -23,7 +23,7 @@ class NavBar extends React.Component {
                             <Nav.Link href="/">Bloques</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link href="/videos">Videos</Nav.Link>
+                            <Nav.Link to='/videos'>Videos</Nav.Link>
                         </Nav.Item>
                     </Nav>
                 </Container>
