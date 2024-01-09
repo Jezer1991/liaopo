@@ -21,7 +21,7 @@ const Direcciones = () => {
             <Routes>
                 <Route exact path="/" element={<Bloque />} />
                 <Route exact path="/bloques" element={<Bloque />} />
-                <Route exact path="/test/:id_test" element={<Test />} />
+                <Route exact path="/test/id/:id_test" element={<Test />} />
                 <Route exact path="/add/bloque" element={<AddBloque />} />
                 <Route exact path="/add/test" element={<AddTest />} />
                 <Route exact path="/add/test/:id_bloque" element={<AddTest />} />

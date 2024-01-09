@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {Container,Navbar} from 'react-bootstrap';
-import {Typography} from '@mui/material';
-import Link from '@mui/material/Link';
+import { Container, Navbar } from 'react-bootstrap';
+import { Typography } from '@mui/material';
 
 
 
@@ -30,13 +29,10 @@ class Footer extends React.Component {
     return (
       <Navbar className="bg-body-tertiary" bg="dark" data-bs-theme="dark" fixed="bottom">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand>
             <Typography style={{ textAlign: 'center', opacity: '0.6', color: '#c6c6c6', fontWeight: '800' }} variant="body2" color="text.secondary" align="center">
-              {'Copyright © '}
-              <Link style={{ fontWeight: '300' }} color="inherit" href="#">
-                Opo'Lia
-              </Link>{' '}
-              {new Date().getFullYear()}
+              {'Copyright ©  Opo\'Lia '}
+              { new Date().getFullYear()}
               {'.'}
 
             </Typography>

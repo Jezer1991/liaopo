@@ -5,8 +5,6 @@ import Card1 from '@mui/material/Card';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import NoHayDatos from "./nohaydatos";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
-import { Button } from "react-bootstrap";
-
 import 'react-multi-carousel/lib/styles.css';
 
 import * as conf from '../conf';
@@ -22,7 +20,7 @@ class Bloque extends React.Component {
             tests: []
         }
     }
-    componentWillMount() {
+    componentDidMount() {
         setTimeout(() => {
             fetch(`${conf.API}bloques`)
                 .then(data => {
@@ -86,18 +84,9 @@ class Bloque extends React.Component {
                                                     </CardContent>
                                                     <CardActions>
                                                         <Tooltip title="Ver test">
-                                                            <Button style={{ width: "50%"}} variant="success">
-                                                                <Link to={`/test/${test.id_test}`}  style={{color:"white", testDecoration: "none" }}component={RouterLink}>
-                                                                    Ver test
-                                                                </Link>
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip title="Realizar test" >
-                                                            <Button disabled style={{ width: "50%" }} variant="danger">
-                                                                <Link to={`/test/${test.id_test}`} style={{color:"white", testDecoration: "none" }} component={RouterLink}>
-                                                                    Realizar test
-                                                                </Link>
-                                                            </Button>
+                                                            <Link className="btn btn-success" to={`/test/id/${test.id_test}`} style={{ color: "white", testDecoration: "none" }} component={RouterLink}>
+                                                                Ver test
+                                                            </Link>
                                                         </Tooltip>
                                                     </CardActions>
                                                 </CardActionArea>
