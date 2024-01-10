@@ -133,7 +133,6 @@ class Test extends React.Component {
                                         </Card>
                                         {this.state.opciones.filter(o => o.id_pregunta === pregunta.id).map((opcion, e) => (
                                             <React.Fragment key={e}>
-
                                                 {opcion.opcionCorrecta === 1
                                                     ? <Alert key={e}>{opcion.opcion} <CheckCircleOutlineIcon id={`RP${i}`} style={{ display: "none" }} /></Alert>
                                                     : <Alert key={e}>{opcion.opcion}</Alert>}
