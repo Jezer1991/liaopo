@@ -57,7 +57,7 @@ class Test extends React.Component {
                     }).then(data => {
                         this.setState({
                             preguntas: data.result,
-                            
+
                         });
                         var aux = [];
                         if (data.result !== undefined) {
@@ -77,24 +77,25 @@ class Test extends React.Component {
     mostrarRespuesta(a) {
         let al = document.getElementById(a)
         if (al.style.display === "none") {
-            al.style.display = "block";
+            al.style.display = "inline";
         } else {
             al.style.display = "none";
         }
     }
     render() {
         return (
-            this.state.preguntas === undefined || this.state.preguntas.length <= 0 ?
-                <React.Fragment>
-                    <NoHayDatos message={"No hay bloques en este momento"} />
-                </React.Fragment>
-                : this.state.loading ?
-                    <Box sx={{ width: '90%', alignItems: "center", textAlign: "center" }}>
-                        <CircularProgress />
-                    </Box>
+            this.state.loading ?
+                <Box sx={{ width: '90%', alignItems: "center", textAlign: "center" }}>
+                    <CircularProgress />
+                </Box>
+                :
+                this.state.preguntas === undefined || this.state.preguntas.length <= 0 ?
+                    <React.Fragment>
+                        <NoHayDatos message={"No hay bloques en este momento"} />
+                    </React.Fragment>
                     : <Box sx={{ width: '90%' }} style={{ margin: "0px auto", marginTop: "30px", marginBottom: "10px" }}>
                         <Breadcrumbs aria-label="breadcrumb">
-                            <Link underline="hover" color="inherit" to="/"  component={RouterLink}style={{ textDecoration: "none" }}>
+                            <Link underline="hover" color="inherit" to="/" component={RouterLink} style={{ textDecoration: "none" }}>
                                 Bloques
                             </Link>
                             <Link underline="hover" color="inherit" to="/" component={RouterLink} style={{ textDecoration: "none" }}>
