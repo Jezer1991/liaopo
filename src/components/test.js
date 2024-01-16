@@ -27,7 +27,7 @@ class Test extends React.Component {
         const id_test = window.location.pathname.split("/")[3];
         setTimeout(() => {
 
-            fetch(`${conf.API}test/${id_test}`)
+            fetch(`${process.env.REACT_APP_API}test/${id_test}`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -38,7 +38,7 @@ class Test extends React.Component {
         }, 500);
 
         setTimeout(() => {
-            fetch(`${conf.API}opciones/${id_test}`)
+            fetch(`${process.env.REACT_APP_API}opciones/${id_test}`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -51,7 +51,7 @@ class Test extends React.Component {
 
         setTimeout(() => {
             setTimeout(() => {
-                fetch(`${conf.API}preguntas/${id_test}`)
+                fetch(`${process.env.REACT_APP_API}preguntas/${id_test}`)
                     .then(data => {
                         return data.json();
                     }).then(data => {

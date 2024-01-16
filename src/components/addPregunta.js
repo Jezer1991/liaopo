@@ -24,7 +24,7 @@ class AddPregunta extends React.Component {
     }
     componentWillMount() {
         setTimeout(() => {
-            fetch(`${conf.API}anhos`)
+            fetch(`${process.env.REACT_APP_API}anhos`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -33,7 +33,7 @@ class AddPregunta extends React.Component {
                     });
                 })
 
-            fetch(`${conf.API}test/${this.state.id_test}`)
+            fetch(`${process.env.REACT_APP_API}test/${this.state.id_test}`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -42,7 +42,7 @@ class AddPregunta extends React.Component {
                     });
                 })
 
-            fetch(`${conf.API}preguntas/${this.state.id_test}`)
+            fetch(`${process.env.REACT_APP_API}preguntas/${this.state.id_test}`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -63,7 +63,7 @@ class AddPregunta extends React.Component {
             confirmButtonText: 'Borrar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${conf.API}delete/pregunta/${id}`)
+                axios.delete(`${process.env.REACT_APP_API}delete/pregunta/${id}`)
                     .then(data => {
                         if (data.status === 200) {
                             Swal.fire({
@@ -106,7 +106,7 @@ class AddPregunta extends React.Component {
                         </Link>
                     </strong>
                 </Alert>
-                <form action={`${conf.API}save/pregunta`} method="post">
+                <form action={`${process.env.REACT_APP_API}save/pregunta`} method="post">
                     <input id="id_test" name="id_test" type="hidden" value={this.state.id_test} />
                     <input id="prevPage" name="prevPage" type="hidden" value={window.location.href} />
                     <div style={{ width: "30%", margin: "0px auto", textAlign: "center" }} className="mt-5 row">

@@ -1,13 +1,11 @@
 import React from "react";
 import { Link as RouterLink } from 'react-router-dom';
-import { Link, Tooltip, CardActions, CardContent, CardMedia, Typography, CardActionArea, AccordionSummary, Accordion, AccordionDetails, } from '@mui/material';
+import { Link, CircularProgress, Box, Tooltip, CardActions, CardContent, CardMedia, Typography, CardActionArea, AccordionSummary, Accordion, AccordionDetails, } from '@mui/material';
 import Card1 from '@mui/material/Card';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import NoHayDatos from "./nohaydatos";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import 'react-multi-carousel/lib/styles.css';
-
-import * as conf from '../conf';
 
 
 
@@ -17,12 +15,13 @@ class Bloque extends React.Component {
         super(props);
         this.state = {
             bloques: [],
-            tests: []
+            tests: [],
+            loading: true
         }
     }
     componentDidMount() {
         setTimeout(() => {
-            fetch(`${conf.API}bloques`)
+            fetch(`${process.env.REACT_APP_API}bloques`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -31,19 +30,25 @@ class Bloque extends React.Component {
                     });
                 })
 
-            fetch(`${conf.API}tests`)
+            fetch(`${process.env.REACT_APP_API}tests`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
                     console.log(data);
                     this.setState({
-                        tests: data.result
+                        tests: data.result,
+                        loading: false
                     });
                 })
         });
     }
     render() {
         return (
+            this.state.loading ?
+            <Box sx={{ width: '90%', alignItems: "center", textAlign: "center" }}>
+                <CircularProgress />
+            </Box>
+            :
             this.state.bloques === undefined || this.state.bloques.length <= 0 ?
                 <React.Fragment>
                     <NoHayDatos message={"No hay bloques en este momento"} />

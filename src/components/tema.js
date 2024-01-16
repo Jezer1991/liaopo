@@ -26,7 +26,7 @@ class Tema extends React.Component {
 
     componentWillMount() {
         setTimeout(() => {
-            fetch(`${conf.API}temas`)
+            fetch(`${process.env.REACT_APP_API}temas`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -35,7 +35,7 @@ class Tema extends React.Component {
                     });
                 })
 
-            fetch(`${conf.API}bloques`)
+            fetch(`${process.env.REACT_APP_API}bloques`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -62,7 +62,7 @@ class Tema extends React.Component {
             confirmButtonText: 'Borrar!'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${conf.API}delete/tema/${id}`)
+                axios.delete(`${process.env.REACT_APP_API}delete/tema/${id}`)
                     .then(data => {
                         if (data.status === 200) {
                             Swal.fire({
@@ -92,7 +92,7 @@ class Tema extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <form action={`${conf.API}save/tema`} method="post">
+                <form action={`${process.env.REACT_APP_API}save/tema`} method="post">
                     <input id="prevPage" name="prevPage" type="hidden" value={window.location.href} />
                     <div style={{ width: "30%", margin: "0px auto", textAlign: "center" }} className="mt-5 row">
                         <TextField

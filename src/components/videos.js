@@ -13,7 +13,7 @@ class Videos extends React.Component {
     }
     componentWillMount() {
         setTimeout(() => {
-            fetch(`${conf.API}videos`)
+            fetch(`${process.env.REACT_APP_API}videos`)
                 .then(data => {
                     return data.json();
                 }).then(data => {

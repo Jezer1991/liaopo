@@ -22,7 +22,7 @@ class Acordion extends React.Component {
 
     componentWillMount() {
         setTimeout(() => {
-            fetch(`${conf.API}tests`)
+            fetch(`${process.env.REACT_APP_API}tests`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -35,7 +35,7 @@ class Acordion extends React.Component {
 
     cargarPreguntas(id_test) {
         setTimeout(() => {
-            fetch(`${conf.API}pregunta/${id_test}`)
+            fetch(`${process.env.REACT_APP_API}pregunta/${id_test}`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -48,7 +48,7 @@ class Acordion extends React.Component {
 
     cargarOpciones(id_pregunta) {
         setTimeout(() => {
-            fetch(`${conf.API}opcion/${id_pregunta}`)
+            fetch(`${process.env.REACT_APP_API}opcion/${id_pregunta}`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
