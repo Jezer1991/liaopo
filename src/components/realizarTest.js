@@ -163,31 +163,24 @@ class RealizarTest extends React.Component {
                                 </Card.Text>
                             </Card.Body>
                         </Card>
-                        <Accordion defaultActiveKey={this.state.t} alwaysOpen>
-                            {this.state.preguntas.map((pregunta, i) => (
-                                <Accordion.Item key={i} eventKey={i}>
-                                    <Accordion.Header>
-                                        {`Pregunta ${i + 1}`}
-                                    </Accordion.Header>
+                        {this.state.preguntas.map((pregunta, i) => (
 
-                                    <Accordion.Body>
-                                        <Card className="mb-2">
-                                            <Card.Header><strong className="mr-5">{`Año ${pregunta.annho}`}</strong>
-                                            </Card.Header>
-                                            <Card.Body>{pregunta.nombre}
-                                            </Card.Body>
-                                        </Card>
-                                        {this.state.opciones.filter(o => o.id_pregunta === pregunta.id).map((opcion, e) => (
-                                            <React.Fragment key={e}>
-                                                <Alert style={{ cursor: "pointer" }} onClick={() => this.respuestaSeleccionada(pregunta, opcion)} id={opcion.id_opcion} key={e}>{opcion.opcion}
-                                                </Alert>
-                                            </React.Fragment>
+                            <>
+                                <Card className="mb-2">
+                                    <Card.Header><strong className="mr-5">{`Año ${pregunta.annho}`}</strong>
+                                    </Card.Header>
+                                    <Card.Body>{pregunta.nombre}
+                                    </Card.Body>
+                                </Card>
+                                {this.state.opciones.filter(o => o.id_pregunta === pregunta.id).map((opcion, e) => (
+                                    <React.Fragment key={e}>
+                                        <Alert style={{ cursor: "pointer" }} onClick={() => this.respuestaSeleccionada(pregunta, opcion)} id={opcion.id_opcion} key={e}>{opcion.opcion}
+                                        </Alert>
+                                    </React.Fragment>
 
-                                        ))}
-                                    </Accordion.Body>
-                                </Accordion.Item>
-                            ))}
-                        </Accordion>
+                                ))}
+                            </>
+                        ))}
 
                         <Button className="mt-5" style={{ width: "100%" }} onClick={this.handleShow}>Finalizar</Button>
 
@@ -202,13 +195,13 @@ class RealizarTest extends React.Component {
                                 <Container>
                                     <Row>
                                         <Col xs={12} md={6}>
-                                            <h5 style={{textAlign: "right"}}>
+                                            <h5 style={{ textAlign: "right" }}>
                                                 Número de aciertos
                                                 <Badge style={{ marginLeft: "10px" }} bg="success"> {this.state.aciertos.length} </Badge>
                                             </h5>
                                         </Col>
                                         <Col xs={12} md={6}>
-                                            <h5 style={{textAlign: "right"}}>
+                                            <h5 style={{ textAlign: "right" }}>
                                                 Número de fallos
                                                 <Badge style={{ marginLeft: "10px" }} bg="danger"> {this.state.fallos.length} </Badge>
                                             </h5>
