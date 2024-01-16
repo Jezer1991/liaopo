@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import NoHayDatos from "./nohaydatos";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import 'react-multi-carousel/lib/styles.css';
+import { Button } from "react-bootstrap";
 
 
 
@@ -45,69 +46,76 @@ class Bloque extends React.Component {
     render() {
         return (
             this.state.loading ?
-            <Box sx={{ width: '90%', alignItems: "center", textAlign: "center" }}>
-                <CircularProgress />
-            </Box>
-            :
-            this.state.bloques === undefined || this.state.bloques.length <= 0 ?
-                <React.Fragment>
-                    <NoHayDatos message={"No hay bloques en este momento"} />
-                </React.Fragment>
+                <Box sx={{ width: '90%', alignItems: "center", textAlign: "center" }}>
+                    <CircularProgress />
+                </Box>
+                :
+                this.state.bloques === undefined || this.state.bloques.length <= 0 ?
+                    <React.Fragment>
+                        <NoHayDatos message={"No hay bloques en este momento"} />
+                    </React.Fragment>
 
-                : <Grid >
-                    {this.state.bloques.map((bloque, i) => (
-                        <Accordion key={`A${i}`} style={{ marginBottom: "10px", borderRadius: "10px", border: "0px" }}>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon style={{ color: "white" }} />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                                style={{ background: "rgb(195,195,195)", color: "rgb(69,73,80)", borderRadius: "10px", border: "0px" }}
-                            >
-                                <Typography style={{ fontWeight: "600" }}>{bloque.nombre}</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Grid style={{ width: "90%", margin: "0px auto", marginTop: "30px", marginBottom: "30px" }} container spacing={1} columnSpacing={{ xs: 1, sm: 1, md: 1, lg: 1 }}>
+                    : <Grid >
+                        {this.state.bloques.map((bloque, i) => (
+                            <Accordion key={`A${i}`} style={{ marginBottom: "10px", borderRadius: "10px", border: "0px" }}>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon style={{ color: "white" }} />}
+                                    aria-controls="panel1a-content"
+                                    id="panel1a-header"
+                                    style={{ background: "rgb(195,195,195)", color: "rgb(69,73,80)", borderRadius: "10px", border: "0px" }}
+                                >
+                                    <Typography style={{ fontWeight: "600" }}>{bloque.nombre}</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Grid style={{ width: "90%", margin: "0px auto", marginTop: "30px", marginBottom: "30px" }} container spacing={1} columnSpacing={{ xs: 1, sm: 1, md: 1, lg: 1 }}>
 
-                                    {this.state.tests.filter(f => f.id_bloque === bloque.id).map((test, e) => (
+                                        {this.state.tests.filter(f => f.id_bloque === bloque.id).map((test, e) => (
 
-                                        <Grid key={`G${e}`} xs={6} sm={6} md={3}>
-                                            <Card1 sx={{ maxWidth: 500 }}>
-                                                <CardActionArea>
-                                                    <CardMedia
-                                                        component="img"
-                                                        height="140"
-                                                        image={test.id_tipo_test === 2 ? "https://www.nextibs.com/wp-content/uploads/2021/12/seguridad-informatica-scaled.jpeg" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM14dRqIaoHzIF1ZPFedemtVAg-99ub0N7Kg&usqp=CAU"}
-                                                        alt="test"
-                                                    />
-                                                    <CardContent>
-                                                        <Typography gutterBottom variant="h5" component="div">
-                                                            {test.nombre_corto_tema}
-                                                        </Typography>
-                                                        <Typography variant="body2" color="text.secondary">
-                                                            {test.nombre_tipo_test}
-                                                        </Typography>
-                                                    </CardContent>
-                                                    <CardActions>
-                                                        <Tooltip title="Ver test">
-                                                            <Link className="btn btn-success" to={`/test/id/${test.id_test}`} style={{ color: "white", textDecoration: "none" }} component={RouterLink}>
-                                                                Ver test
-                                                            </Link>
-                                                        </Tooltip>
-                                                        <Tooltip title="Realizar test" >
-                                                            <Link className="btn btn-danger" to={`/test/start/${test.id_test}`} style={{ color: "white", textDecoration: "none" }} component={RouterLink}>
-                                                                Realizar test
-                                                            </Link>
-                                                        </Tooltip>
-                                                    </CardActions>
-                                                </CardActionArea>
-                                            </Card1>
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                            </AccordionDetails>
-                        </Accordion>
-                    ))}
-                </Grid>
+                                            <Grid key={`G${e}`} xs={6} sm={6} md={3}>
+                                                <Card1 sx={{ maxWidth: 500 }}>
+                                                    <CardActionArea>
+                                                        <CardMedia
+                                                            component="img"
+                                                            height="140"
+                                                            image={test.id_tipo_test === 2 ? "https://www.nextibs.com/wp-content/uploads/2021/12/seguridad-informatica-scaled.jpeg" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM14dRqIaoHzIF1ZPFedemtVAg-99ub0N7Kg&usqp=CAU"}
+                                                            alt="test"
+                                                        />
+                                                        <CardContent>
+                                                            <Typography gutterBottom variant="h5" component="div">
+                                                                {test.nombre_corto_tema}
+                                                            </Typography>
+                                                            <Typography variant="body2" color="text.secondary">
+                                                                {test.nombre_tipo_test}
+                                                            </Typography>
+                                                        </CardContent>
+                                                        <CardActions>
+                                                            <div className="row col-sm-12">
+                                                                <div className="col-sm-6 col-xs-12 mb-2">
+                                                                    <Tooltip title="Ver test" className="col-sm-12">
+                                                                        <Link className="btn btn-success" to={`/test/id/${test.id_test}`} style={{ color: "white", textDecoration: "none" }} component={RouterLink}>
+                                                                            Ver test
+                                                                        </Link>
+                                                                    </Tooltip>
+                                                                </div>
+                                                                <div className="col-sm-6 col-xs-12">
+                                                                    <Tooltip title="Realizar test" className="col-sm-12">
+                                                                        <Link to={`/test/start/${test.id_test}`} className="btn btn-danger" style={{ color: "white", textDecoration: "none"}} component={RouterLink}>
+                                                                            Realizar test
+                                                                        </Link>
+                                                                    </Tooltip>
+                                                                </div>
+                                                            </div>
+
+                                                        </CardActions>
+                                                    </CardActionArea>
+                                                </Card1>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </AccordionDetails>
+                            </Accordion>
+                        ))}
+                    </Grid>
         );
     }
 

@@ -202,14 +202,14 @@ class RealizarTest extends React.Component {
                             <Modal.Body>
                                 <Container>
                                     <Row>
-                                        <Col xs={12} md={8}>
-                                            <h5>
+                                        <Col xs={12} md={6}>
+                                            <h5 style={{textAlign: "right"}}>
                                                 Número de aciertos
                                                 <Badge style={{ marginLeft: "10px" }} bg="success"> {this.state.aciertos.length} </Badge>
                                             </h5>
                                         </Col>
-                                        <Col xs={6} md={4}>
-                                            <h5>
+                                        <Col xs={12} md={6}>
+                                            <h5 style={{textAlign: "right"}}>
                                                 Número de fallos
                                                 <Badge style={{ marginLeft: "10px" }} bg="danger"> {this.state.fallos.length} </Badge>
                                             </h5>
@@ -217,7 +217,7 @@ class RealizarTest extends React.Component {
                                     </Row>
 
                                     <Row>
-                                        
+
                                         <Accordion defaultActiveKey="0">
                                             {this.state.respuestasSeleccionadas.map((rp, e) => (
                                                 <Accordion.Item eventKey={e} key={e}>
@@ -229,12 +229,13 @@ class RealizarTest extends React.Component {
                                                         </p>
                                                     </Accordion.Header>
                                                     <Accordion.Body>
-                                                        <Stack direction="vertical" gap={2}>
-                                                            <Badge style={{ padding: "20px", fontSize: "15px", overflowY: "auto" }} bg="success"><p>{rp.opcionCorrecta}</p></Badge>
+                                                        <div className="md-12 xs-12">
+                                                            <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#198754", color: "white", fontWeight: 600 }} >{rp.opcionCorrecta}</div>
                                                             {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
-                                                                ? <Badge style={{ padding: "20px", fontSize: "15px", overflowY: "auto" }} bg="danger">{rp.opcionSeleccionada}</Badge>
+                                                                ? <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#dc3545", color: "white", fontWeight: 600 }} >{rp.opcionSeleccionada}</div>
                                                                 : ""}
-                                                        </Stack>
+                                                        </div>
+
                                                     </Accordion.Body>
                                                 </Accordion.Item>
                                             ))}
