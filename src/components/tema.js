@@ -6,7 +6,6 @@ import Swal from 'sweetalert2'
 import axios from 'axios';
 import NoHayDatos from "./nohaydatos";
 import { TextareaAutosize } from '@mui/base';
-import * as conf from '../conf';
 
 
 

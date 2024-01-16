@@ -6,7 +6,6 @@ import Swal from 'sweetalert2'
 import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import * as conf from '../conf';
 
 
 class AddBloque extends React.Component {

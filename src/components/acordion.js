@@ -3,8 +3,6 @@ import Accordion from 'react-bootstrap/Accordion';
 import Alert from 'react-bootstrap/Alert';
 import Card from 'react-bootstrap/Card';
 
-import * as conf from '../conf';
-
 class Acordion extends React.Component {
 
     constructor(props) {

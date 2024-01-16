@@ -1,7 +1,6 @@
 import React from "react";
 
 import  {Grid, Card} from '@mui/material';
-import * as conf from '../conf';
 
 class Videos extends React.Component {
 

@@ -7,7 +7,6 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import Swal from 'sweetalert2'
 import axios from 'axios';
-import * as conf from '../conf';
 
 class AddOpcion extends React.Component {
     constructor(props) {

@@ -7,8 +7,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import NoHayDatos from "./nohaydatos";
 import { Link as RouterLink } from 'react-router-dom';
 
-import * as conf from '../conf';
-
 class Test extends React.Component {
 
     constructor(props) {

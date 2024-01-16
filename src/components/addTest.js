@@ -8,7 +8,6 @@ import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import Swal from 'sweetalert2'
 import axios from 'axios';
 import { TextareaAutosize } from '@mui/base';
-import * as conf from '../conf';
 
 
 class AddTest extends React.Component {
