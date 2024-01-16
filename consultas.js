@@ -170,7 +170,7 @@ app.get('/api/opcion/:id_pregunta', (req, res) => {
 
 app.get('/api/opciones/:id_test', (req, res) => {
     const id = req.params.id_test;
-    const sql = "SELECT * FROM opcion o INNER JOIN pregunta p on p.id = o.id_pregunta WHERE p.id_test = ?";
+    const sql = "SELECT o.id as id_opcion, p.*, o.* FROM opcion o INNER JOIN pregunta p on p.id = o.id_pregunta WHERE p.id_test = ?";
     db.query(sql, id, async (err, result) => {
         if (err === null) {
             res.send({ code: 201, result });

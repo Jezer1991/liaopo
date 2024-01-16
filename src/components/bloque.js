@@ -89,8 +89,13 @@ class Bloque extends React.Component {
                                                     </CardContent>
                                                     <CardActions>
                                                         <Tooltip title="Ver test">
-                                                            <Link className="btn btn-success" to={`/test/id/${test.id_test}`} style={{ color: "white", testDecoration: "none" }} component={RouterLink}>
+                                                            <Link className="btn btn-success" to={`/test/id/${test.id_test}`} style={{ color: "white", textDecoration: "none" }} component={RouterLink}>
                                                                 Ver test
+                                                            </Link>
+                                                        </Tooltip>
+                                                        <Tooltip title="Realizar test" >
+                                                            <Link className="btn btn-danger" to={`/test/start/${test.id_test}`} style={{ color: "white", textDecoration: "none" }} component={RouterLink}>
+                                                                Realizar test
                                                             </Link>
                                                         </Tooltip>
                                                     </CardActions>

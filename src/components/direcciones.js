@@ -14,6 +14,8 @@ import AddOpcion from './addOpcion';
 import Videos from './videos';
 import Tema from './tema';
 import NavBar from './navbar';
+import RealizarTest from './realizarTest';
+
 const Direcciones = () => {
     return (
         <Router>
@@ -29,6 +31,7 @@ const Direcciones = () => {
                 <Route exact path="/add/opcion/:id_pregunta" element={<AddOpcion />} />
                 <Route exact path="/videos" element={<Videos />} />
                 <Route exact path="/temas" element={<Tema />} />
+                <Route exact path="/test/start/:id_test" element={<RealizarTest />} />
                 <Route exact path="*" element={<ErrorPage />} />
             </Routes>
         </Router>

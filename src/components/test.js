@@ -113,7 +113,7 @@ class Test extends React.Component {
                         <Accordion defaultActiveKey={this.state.t} alwaysOpen>
                             {this.state.preguntas.map((pregunta, i) => (
                                 <Accordion.Item key={i} eventKey={i}>
-                                    <Accordion.Header>
+                                    <Accordion.Header >
                                         {`Pregunta ${i + 1}`}
                                     </Accordion.Header>
 
