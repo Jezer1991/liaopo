@@ -63,7 +63,6 @@ class Test extends React.Component {
                 .then(data => {
                     return data.json();
                 }).then(data => {
-                    console.log(data);
                     this.setState({
                         test: data.result[0],
                         loading: false

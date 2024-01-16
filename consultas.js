@@ -88,7 +88,6 @@ app.get('/api/test/:id_test', async (req, res) => {
         " WHERE t.id = ?";
     db.query(sql, id, async (err, result) => {
         if (err === null) {
-            console.log(result);
             res.send({ code: 201, result });
         } else {
             res.send({ code: 202, err });
