@@ -33,7 +33,7 @@ class Test extends React.Component {
                         test: data.result[0]
                     });
                 })
-        }, 500);
+        }, 1000);
 
         setTimeout(() => {
             fetch(`${process.env.REACT_APP_API}opciones/${id_test}`)
@@ -45,7 +45,7 @@ class Test extends React.Component {
                     });
                 })
 
-        }, 500)
+        }, 1000)
 
         setTimeout(() => {
             setTimeout(() => {
