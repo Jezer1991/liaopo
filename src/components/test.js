@@ -22,19 +22,8 @@ class Test extends React.Component {
     }
 
     componentDidMount() {
+
         const id_test = window.location.pathname.split("/")[3];
-        setTimeout(() => {
-
-            fetch(`${process.env.REACT_APP_API}test/${id_test}`)
-                .then(data => {
-                    return data.json();
-                }).then(data => {
-                    this.setState({
-                        test: data.result[0]
-                    });
-                })
-        }, 1000);
-
         setTimeout(() => {
             fetch(`${process.env.REACT_APP_API}opciones/${id_test}`)
                 .then(data => {
@@ -45,31 +34,43 @@ class Test extends React.Component {
                     });
                 })
 
-        }, 1000)
+        },)
 
         setTimeout(() => {
-            setTimeout(() => {
-                fetch(`${process.env.REACT_APP_API}preguntas/${id_test}`)
-                    .then(data => {
-                        return data.json();
-                    }).then(data => {
-                        this.setState({
-                            preguntas: data.result,
+            fetch(`${process.env.REACT_APP_API}preguntas/${id_test}`)
+                .then(data => {
+                    return data.json();
+                }).then(data => {
+                    this.setState({
+                        preguntas: data.result,
 
-                        });
-                        var aux = [];
-                        if (data.result !== undefined) {
-                            for (var i = 0; i <= data.result.length; i++) {
-                                aux.push(i)
-                            }
+                    });
+                    var aux = [];
+                    if (data.result !== undefined) {
+                        for (var i = 0; i <= data.result.length; i++) {
+                            aux.push(i)
                         }
-                        this.setState({
-                            t: aux,
-                            loading: false
-                        });
-                    })
-            });
-        }, 500)
+                    }
+                    this.setState({
+                        t: aux
+                    });
+                })
+        });
+
+        setTimeout(() => {
+
+            fetch(`${process.env.REACT_APP_API}test/${id_test}`)
+                .then(data => {
+                    return data.json();
+                }).then(data => {
+                    console.log(data);
+                    this.setState({
+                        test: data.result[0],
+                        loading: false
+                    });
+                })
+        }, );
+
 
     }
     mostrarRespuesta(a) {

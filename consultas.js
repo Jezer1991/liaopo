@@ -43,7 +43,8 @@ app.get('/api/tests', (req, res) => {
     });
 })
 
-app.get('/api/tests/:id_bloque', (req, res) => {
+
+app.get('/api/tests/:id_bloque', async (req, res) => {
     const id = req.params.id_bloque;
 
     const sql = "SELECT " +
@@ -69,7 +70,7 @@ app.get('/api/tests/:id_bloque', (req, res) => {
     });
 })
 
-app.get('/api/test/:id_test', (req, res) => {
+app.get('/api/test/:id_test', async (req, res) => {
     const id = req.params.id_test;
     const sql = "SELECT" +
         " t.id as id_test," +
@@ -139,7 +140,7 @@ app.get('/api/preguntas/:id_test', (req, res) => {
     " FROM pregunta p"+
     " INNER JOIN anho a on p.anho = a.id"+ 
     " where id_test = ?";
-     db.query(sql2, id, (err, result) => {
+     db.query(sql2, id, async (err, result) => {
         if (err === null) {
             res.send({ code: 201, result });
         } else {
@@ -151,7 +152,7 @@ app.get('/api/preguntas/:id_test', (req, res) => {
 app.get('/api/pregunta/:id_pregunta', (req, res) => {
     const id_pregunta = req.params.id_pregunta;
     const sql2 = "SELECT * FROM pregunta where id = ?";
-    db.query(sql2, id_pregunta, (err, result) => {
+    db.query(sql2, id_pregunta,async (err, result) => {
         if (err === null) {
             res.send({ code: 201, result });
         } else {
@@ -163,7 +164,7 @@ app.get('/api/pregunta/:id_pregunta', (req, res) => {
 app.get('/api/opcion/:id_pregunta', (req, res) => {
     const id = req.params.id_pregunta;
     const sql2 = "SELECT * FROM opcion where id_pregunta = ?";
-    db.query(sql2, id, (err, result) => {
+    db.query(sql2, id, async(err, result) => {
         res.send(result);
     });
 })
@@ -238,7 +239,7 @@ app.get('/api/anhos', (req, res) => {
 app.post('/api/save/bloque', (req, res) => {
     const nombre = req.body.nombre;
     const sql = "INSERT INTO bloque (nombre) VALUES(?);";
-    db.query(sql, nombre, (err, result) => {
+    db.query(sql, nombre, async(err, result) => {
         if (!err) return res.redirect(req.body.prevPage);
         res.send(err);
     });
@@ -249,7 +250,7 @@ app.post('/api/save/tema', (req, res) => {
     const nombre_largo = req.body.nombre_largo;
     const id_bloque = req.body.id_bloque;
     const sql = "INSERT INTO tema (nombre_corto, nombre_largo, id_bloque) VALUES(?,?,?);";
-    db.query(sql, [nombre_corto, nombre_largo,id_bloque], (err, result) => {
+    db.query(sql, [nombre_corto, nombre_largo,id_bloque], async (err, result) => {
         if (!err) return res.redirect(req.body.prevPage);
         res.send(err);
     });
@@ -259,7 +260,7 @@ app.post('/api/save/tema', (req, res) => {
 app.delete('/api/delete/bloque/:id', (req, res) => {
     const id = req.params.id;
     const sql = "DELETE FROM bloque where id = ?";
-    db.query(sql, id, (err, result) => {
+    db.query(sql, id, async(err, result) => {
         if (err != null) res.send(result);
         res.send(err);
     });
@@ -268,7 +269,7 @@ app.delete('/api/delete/bloque/:id', (req, res) => {
 app.delete('/api/delete/tema/:id', (req, res) => {
     const id = req.params.id;
     const sql = "DELETE FROM tema where id = ?";
-    db.query(sql, id, (err, result) => {
+    db.query(sql, id, async(err, result) => {
         if (err != null) res.send(result);
         res.send(err);
     });
@@ -280,7 +281,7 @@ app.post('/api/save/test', (req, res) => {
     const bloque = req.body.bloque;
     const tipoTest = req.body.tipoTest;
     const sql = "INSERT INTO test (nombre, id_bloque, id_tipo_test) VALUES(?,?,?);";
-    db.query(sql, [nombre, bloque, tipoTest], (err, result) => {
+    db.query(sql, [nombre, bloque, tipoTest], async(err, result) => {
         if (!err) return res.redirect(req.body.prevPage);
         res.send(err);
     });
@@ -290,7 +291,7 @@ app.post('/api/save/test', (req, res) => {
 app.delete('/api/delete/test/:id', (req, res) => {
     const id = req.params.id;
     const sql = "DELETE FROM test where id = ?";
-    db.query(sql, id, (err, result) => {
+    db.query(sql, id, async(err, result) => {
         if (err != null) res.send(result);
         res.send(err);
     });
@@ -302,7 +303,7 @@ app.post('/api/save/pregunta', (req, res) => {
     const id_test = req.body.id_test;
     const anho = req.body.anho;
     const sql = "INSERT INTO pregunta (nombre, id_test, anho) VALUES(?,?,?);";
-    db.query(sql, [nombre, id_test, anho], (err, result) => {
+    db.query(sql, [nombre, id_test, anho], async(err, result) => {
         if (!err) return res.redirect(req.body.prevPage);
         res.send(err);
     });
@@ -312,7 +313,7 @@ app.post('/api/save/pregunta', (req, res) => {
 app.delete('/api/delete/pregunta/:id', (req, res) => {
     const id = req.params.id;
     const sql = "DELETE FROM pregunta where id = ?";
-    db.query(sql, id, (err, result) => {
+    db.query(sql, id, async(err, result) => {
         if (err != null) res.send(result);
         res.send(err);
     });
@@ -324,7 +325,7 @@ app.post('/api/save/opcion', (req, res) => {
     const id_pregunta = req.body.id_pregunta;
     const opcionCorrecta = req.body.opcionCorrecta;
     const sql = "INSERT INTO opcion (opcion, id_pregunta, opcionCorrecta) VALUES(?,?,?);";
-    db.query(sql, [opcion, id_pregunta, opcionCorrecta], (err, result) => {
+    db.query(sql, [opcion, id_pregunta, opcionCorrecta], async(err, result) => {
         if (!err) return res.redirect(req.body.prevPage);
         res.send(err);
     });
@@ -333,7 +334,7 @@ app.post('/api/save/opcion', (req, res) => {
 app.delete('/api/delete/opcion/:id', (req, res) => {
     const id = req.params.id;
     const sql = "DELETE FROM opcion where id = ?";
-    db.query(sql, id, (err, result) => {
+    db.query(sql, id, async(err, result) => {
         if (err != null) res.send(result);
         res.send(err);
     });
