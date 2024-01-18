@@ -165,7 +165,7 @@ class RealizarTest extends React.Component {
                         </Card>
                         {this.state.preguntas.map((pregunta, i) => (
 
-                            <>
+                            <Card className="p-5 m-2">
                                 <Card className="mb-2">
                                     <Card.Header><strong className="mr-5">{`Año ${pregunta.annho}`}</strong>
                                     </Card.Header>
@@ -179,7 +179,7 @@ class RealizarTest extends React.Component {
                                     </React.Fragment>
 
                                 ))}
-                            </>
+                            </Card>
                         ))}
 
                         <Button className="mt-5" style={{ width: "100%" }} onClick={this.handleShow}>Finalizar</Button>

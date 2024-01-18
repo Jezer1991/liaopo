@@ -34,7 +34,6 @@ class Bloque extends React.Component {
                 .then(data => {
                     return data.json();
                 }).then(data => {
-                    console.log(data);
                     this.setState({
                         tests: data.result,
                         loading: false

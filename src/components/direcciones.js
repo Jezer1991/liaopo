@@ -15,7 +15,7 @@ import Videos from './videos';
 import Tema from './tema';
 import NavBar from './navbar';
 import RealizarTest from './realizarTest';
-
+import Prueba from './prueba';
 const Direcciones = () => {
     return (
         <Router>
@@ -32,6 +32,7 @@ const Direcciones = () => {
                 <Route exact path="/videos" element={<Videos />} />
                 <Route exact path="/temas" element={<Tema />} />
                 <Route exact path="/test/start/:id_test" element={<RealizarTest />} />
+                <Route exact path="/prueba" element={<Prueba />} />
                 <Route exact path="*" element={<ErrorPage />} />
             </Routes>
         </Router>

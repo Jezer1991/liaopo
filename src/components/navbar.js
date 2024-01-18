@@ -1,14 +1,27 @@
 import React from "react";
-import { Link} from '@mui/material';
 
-import { Container, Navbar, Nav} from 'react-bootstrap';
+import { Container, Navbar, Nav } from 'react-bootstrap';
 import Bichon from "./_imagenes/bichon-frise.png"
-import { Link as RouterLink } from 'react-router-dom';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Dropdown from 'react-bootstrap/Dropdown';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Login from "./login";
 
 class NavBar extends React.Component {
+    constructor(props){
+        super(props);
+        this.logout = this.logout.bind(this);
+    }
 
+
+    logout(){
+        window.sessionStorage.setItem("usuarioLogueado", false);
+        window.location.reload(true);
+    }
     render() {
         return (
+
             <Navbar className="bg-body-tertiary mb-5" bg="dark" data-bs-theme="dark">
                 <Container>
                     <Navbar.Brand href="/">
@@ -21,14 +34,32 @@ class NavBar extends React.Component {
                         />{' '}
                         <h1>Lia'Opo</h1>
                     </Navbar.Brand>
-                    <Nav>
-                        <Nav.Item >
-                            <Link style={{margin: "20px", color:"white"}} to="/" component={RouterLink}>Bloques</Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Link style={{color:"white"}} to='/videos' component={RouterLink}>Videos</Link>
-                        </Nav.Item>
+                    <Nav className="me-auto mt-5">
+                        <Nav.Link href="/">Bloques</Nav.Link>
+                        <Nav.Link href="/videos">Videos</Nav.Link>
                     </Nav>
+                    {window.sessionStorage.getItem("usuarioLogueado") === "true" ?
+                        <Dropdown  align="end" as={ButtonGroup} className="mt-5">
+                            <Dropdown.Toggle  style={{background: "inherit", border: "0px"}}>
+                                <SettingsIcon />
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <p style={{padding: "10px"}}>Hola {JSON.parse(window.sessionStorage.getItem("usuario")).nombre}</p>
+                                <Dropdown.Divider />
+                                <Dropdown.Item eventKey="1">Action</Dropdown.Item>
+                                <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
+                                <Dropdown.Item eventKey="3" active>
+                                    Active Item
+                                </Dropdown.Item>
+                                <Dropdown.Divider />
+                                <Dropdown.Item eventKey="4" onClick={this.logout}><LogoutIcon /></Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        : <Navbar.Collapse className="justify-content-end  mt-5">
+                            <Login />
+                        </Navbar.Collapse>
+                    }
+
                 </Container>
             </Navbar>
         );

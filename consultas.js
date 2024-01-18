@@ -338,3 +338,17 @@ app.delete('/api/delete/opcion/:id', (req, res) => {
         res.send(err);
     });
 });
+
+
+app.post('/api/login', (req, res) => {
+    const usuario = req.body.usuario;
+    const password = req.body.password;
+    const sql = "SELECT * FROM usuario WHERE usuario = ? AND password = ?";
+    db.query(sql, [usuario, password],async (err, result) => {
+        if (err === null) {
+            res.send({ code: 201, result });
+        } else {
+            res.send({ code: 202, err });
+        }
+    });
+});
