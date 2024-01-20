@@ -38,6 +38,17 @@ class Login extends React.Component {
         document.getElementById("password").value=""
     }
 
+    getPermisos(data){
+        console.log(data.result);
+        const aux = data.result.map(p => p.id_permiso);
+        console.log(process.env.REACT_APP_PERMISO_ADD);
+        console.log(aux.includes(process.env.REACT_APP_PERMISO_ADD));
+        window.sessionStorage.setItem("canAdd", aux.includes(parseInt(process.env.REACT_APP_PERMISO_ADD)));
+        window.sessionStorage.setItem("canDelete", aux.includes(parseInt(process.env.REACT_APP_PERMISO_DELETE)));
+        window.sessionStorage.setItem("canEdit", aux.includes(parseInt(process.env.REACT_APP_PERMISO_EDIT)));
+        window.sessionStorage.setItem("canList", aux.includes(parseInt(process.env.REACT_APP_PERMISO_LIST)));
+    }
+
     login() {
         setTimeout(() => {
             const requestOptions = {
@@ -49,6 +60,7 @@ class Login extends React.Component {
                 .then(data => {
                     return data.json();
                 }).then(data => {
+                    console.log(data);
                     if (data.result.length <= 0) {
                         Swal.fire({
                             title: "Falló el login",
@@ -57,11 +69,13 @@ class Login extends React.Component {
                         });
                         this.resetearCamposLogin();
                     } else {
+                        localStorage.setItem("aux", "aux")
                         window.sessionStorage.setItem("usuarioLogueado", true);
-                        window.sessionStorage.setItem("usuario", JSON.stringify(data.result[0]));
+                        window.sessionStorage.setItem("usuario", JSON.stringify({nombre_usuario: data.result[0].nombre_usuario}));
+                        this.getPermisos(data);
                         let timerInterval;
                         Swal.fire({
-                            title: "Bienvenido de nuevo "+data.result[0].nombre,
+                            title: "Bienvenido de nuevo "+data.result[0].nombre_usuario,
                             html: "La ventana se cerrara en <b></b>",
                             timer: 2000,
                             timerProgressBar: true,

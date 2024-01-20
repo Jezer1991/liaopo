@@ -9,13 +9,13 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Login from "./login";
 
 class NavBar extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.logout = this.logout.bind(this);
     }
 
 
-    logout(){
+    logout() {
         window.sessionStorage.setItem("usuarioLogueado", false);
         window.location.reload(true);
     }
@@ -39,18 +39,22 @@ class NavBar extends React.Component {
                         <Nav.Link href="/videos">Videos</Nav.Link>
                     </Nav>
                     {window.sessionStorage.getItem("usuarioLogueado") === "true" ?
-                        <Dropdown  align="end" as={ButtonGroup} className="mt-5">
-                            <Dropdown.Toggle  style={{background: "inherit", border: "0px"}}>
+                        <Dropdown align="end" as={ButtonGroup} className="mt-5">
+                            <Dropdown.Toggle style={{ background: "inherit", border: "0px" }}>
                                 <SettingsIcon />
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                                <p style={{padding: "10px"}}>Hola {JSON.parse(window.sessionStorage.getItem("usuario")).nombre}</p>
+                                <p style={{ padding: "10px" }}>Hola {JSON.parse(window.sessionStorage.getItem("usuario")).nombre_usuario}</p>
                                 <Dropdown.Divider />
-                                <Dropdown.Item eventKey="1">Action</Dropdown.Item>
-                                <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
-                                <Dropdown.Item eventKey="3" active>
-                                    Active Item
-                                </Dropdown.Item>
+                                {JSON.parse(window.sessionStorage.getItem("canList"))
+                                    ? <Dropdown.Item href="/add/bloque">Bloques</Dropdown.Item>
+                                    : ""
+                                }
+                                {JSON.parse(window.sessionStorage.getItem("canList"))
+                                    ? <Dropdown.Item href="/add/bloque">Bloques</Dropdown.Item>
+                                    : ""
+                                }
+                                <Dropdown.Item href="/add/test">Tests</Dropdown.Item>
                                 <Dropdown.Divider />
                                 <Dropdown.Item eventKey="4" onClick={this.logout}><LogoutIcon /></Dropdown.Item>
                             </Dropdown.Menu>
