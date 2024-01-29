@@ -13,13 +13,11 @@ import AddPregunta from './addPregunta';
 import AddOpcion from './addOpcion';
 import Videos from './videos';
 import Tema from './tema';
-import NavBar from './navbar';
 import RealizarTest from './realizarTest';
 import Prueba from './prueba';
 const Direcciones = () => {
     return (
         <Router>
-            <NavBar />
             <Routes>
                 <Route exact path="/" element={<Bloque />} />
                 <Route exact path="/bloques" element={<Bloque />} />
