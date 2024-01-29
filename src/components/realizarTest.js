@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Card, Accordion, Alert, Button } from "react-bootstrap";
-import { CircularProgress, Box, Link, Breadcrumbs, Typography } from '@mui/material';
+import { Card, Accordion, Alert, Button, Navbar } from "react-bootstrap";
+import { CircularProgress, Box, Link, Breadcrumbs, Typography, Tooltip } from '@mui/material';
 import NoHayDatos from "./nohaydatos";
 import { Link as RouterLink } from 'react-router-dom';
 import Swal from 'sweetalert2'
@@ -12,6 +12,9 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 class RealizarTest extends React.Component {
 
@@ -26,7 +29,8 @@ class RealizarTest extends React.Component {
             respuestasSeleccionadas: [],
             show: false,
             aciertos: [],
-            fallos: []
+            fallos: [],
+            porcentaje: 0,
         }
         this.respuestaSeleccionada = this.respuestaSeleccionada.bind(this);
         this.handleClose = this.handleClose.bind(this);
@@ -88,6 +92,10 @@ class RealizarTest extends React.Component {
         if (preguntaRespondida) {
             Swal.fire("Lo sentimos, ya has respondido esta pregunta");
         } else {
+            var porcentajeActual = ((this.state.respuestasSeleccionadas.length + 1) * 100) / this.state.preguntas.length;
+            this.setState({
+                porcentaje: Math.round(porcentajeActual)
+            })
             var a = this.state.aciertos;
             var f = this.state.fallos;
             var aux = this.state.respuestasSeleccionadas;
@@ -155,6 +163,28 @@ class RealizarTest extends React.Component {
                             <Typography color="text.primary">{this.state.test.nombre_corto_tema}</Typography>
                         </Breadcrumbs>
                         <Card className="mb-2">
+
+                            <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2" style={{ position: 'fixed', top: '20%', zIndex: 1, left: "15px", minWidth: "100px"}}>
+                                <ProgressBar label={`${this.state.porcentaje}%`} animated now={this.state.porcentaje} />
+                                {this.state.porcentaje >= 100 ?
+                                    <>
+                                        <Tooltip title="Terminar test">
+                                            <Button variant="success" style={{ padding: "10px", margin: "10px" }} onClick={this.handleShow}><ArrowRightIcon /></Button>
+                                        </Tooltip>
+
+                                        <Tooltip title="Reiniciar test">
+                                            <Button variant="warning" style={{ padding: "10px", margin: "10px" }} onClick={() => { window.location.reload(true); }}><RestartAltIcon /></Button>
+                                        </Tooltip>
+                                    </>
+                                    : ""}
+
+                            </div>
+
+                            <Navbar className="bg-body-tertiary mb-5" bg="dark" data-bs-theme="dark">
+                                <Container>
+                                </Container>
+                            </Navbar>
+
                             <Card.Img variant="top" height="100px" src="https://i0.wp.com/latorruana.com/wp-content/uploads/2022/09/estuche-no-puedo-tengo-opos.jpg?fit=1920%2C1920&ssl=1" style={{ objectFit: "cover" }} />
                             <Card.Body>
                                 <Card.Title>{this.state.test.nombre_bloque}</Card.Title>
@@ -165,7 +195,7 @@ class RealizarTest extends React.Component {
                         </Card>
                         {this.state.preguntas.map((pregunta, i) => (
 
-                            <Card className="p-5 m-2">
+                            <Card className="p-5 m-2" key={i}>
                                 <Card className="mb-2">
                                     <Card.Header><strong className="mr-5">{`Año ${pregunta.annho}`}</strong>
                                     </Card.Header>
@@ -182,7 +212,7 @@ class RealizarTest extends React.Component {
                             </Card>
                         ))}
 
-                        <Button className="mt-5" style={{ width: "100%" }} onClick={this.handleShow}>Finalizar</Button>
+                        {this.state.porcentaje >= 100 ? <Button className="mt-5" style={{ width: "100%" }} onClick={this.handleShow}>Finalizar</Button> : ""}
 
                         <Modal show={this.state.show} onHide={this.handleClose}
                             size="xl"

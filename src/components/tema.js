@@ -93,7 +93,7 @@ class Tema extends React.Component {
             <React.Fragment>
                 <form action={`${process.env.REACT_APP_API}save/tema`} method="post">
                     <input id="prevPage" name="prevPage" type="hidden" value={window.location.href} />
-                    <div style={{ width: "30%", margin: "0px auto", textAlign: "center" }} className="mt-5 row">
+                    <div style={{margin: "0px auto", textAlign: "center" }} className="mt-5 row col-xs-12 col-sm-12 col-md-10 col-lg-6">
                         <TextField
                             required
                             id="nombre_corto"
@@ -132,12 +132,13 @@ class Tema extends React.Component {
                         <NoHayDatos message={"En este momento no hay temas"} />
                     </React.Fragment>
                     :
-                    <div style={{ width: "80%", margin: "0px auto", textAlign: "center" }} className="mt-5 mb-5 row">
+                    <div style={{marginBottom: "100px", margin: "0px auto", textAlign: "center" }} className="mt-5 mb-5 row col-xs-12">
                         <TableContainer component={Paper}>
                             <Table size="small" aria-label="a dense table">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell align="center">ID</TableCell>
+                                        <TableCell align="center">Nombre Bloque</TableCell>
                                         <TableCell align="center">Nombre corto</TableCell>
                                         <TableCell align="center">Nombre Largo</TableCell>
                                         <TableCell align="center" colSpan={2}></TableCell>
@@ -150,6 +151,7 @@ class Tema extends React.Component {
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                         >
                                             <TableCell align="center">{tema.id}</TableCell>
+                                            <TableCell align="center">{tema.nombre_bloque}</TableCell>
                                             <TableCell align="center">{tema.nombre_corto}</TableCell>
                                             <TableCell align="center">{tema.nombre_largo}</TableCell>
                                             <TableCell align="center">

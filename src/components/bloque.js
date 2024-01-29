@@ -5,6 +5,9 @@ import Card1 from '@mui/material/Card';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import NoHayDatos from "./nohaydatos";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
+import Test from './_imagenes/test.svg';
+import SeeTest from './_imagenes/seeTest.svg';
+
 import 'react-multi-carousel/lib/styles.css';
 
 
@@ -69,17 +72,17 @@ class Bloque extends React.Component {
 
                                         {this.state.tests.filter(f => f.id_bloque === bloque.id).map((test, e) => (
 
-                                            <Grid key={`G${e}`} xs={6} sm={6} md={3}>
-                                                <Card1 sx={{ maxWidth: 500 }}>
+                                            <Grid key={`G${e}`} xs={6} sm={2} md={2}>
+                                                <Card1 sx={{ maxWidth: 200 }}>
                                                     <CardActionArea>
                                                         <CardMedia
                                                             component="img"
-                                                            height="140"
-                                                            image={test.id_tipo_test === 2 ? "https://www.nextibs.com/wp-content/uploads/2021/12/seguridad-informatica-scaled.jpeg" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM14dRqIaoHzIF1ZPFedemtVAg-99ub0N7Kg&usqp=CAU"}
+                                                            height="100"
+                                                            image={test.id_tipo_test === 2 ? "https://www.nextibs.com/wp-content/uploads/2021/12/seguridad-informatica-scaled.jpeg" : "https://img.freepik.com/vector-gratis/gestion-financiera-elementos-profesionales_23-2147680889.jpg"}
                                                             alt="test"
                                                         />
                                                         <CardContent>
-                                                            <Typography gutterBottom variant="h5" component="div">
+                                                            <Typography gutterBottom variant="h6" component="div">
                                                                 {test.nombre_corto_tema}
                                                             </Typography>
                                                             <Typography variant="body2" color="text.secondary">
@@ -87,23 +90,28 @@ class Bloque extends React.Component {
                                                             </Typography>
                                                         </CardContent>
                                                         <CardActions>
-                                                            <div className="row col-sm-12">
-                                                                <div className="col-sm-6 col-xs-12 mb-2">
-                                                                    <Tooltip title="Ver test" className="col-sm-12">
-                                                                        <Link className="btn btn-success" to={`/test/id/${test.id_test}`} style={{ color: "white", textDecoration: "none" }} component={RouterLink}>
-                                                                            Ver test
-                                                                        </Link>
-                                                                    </Tooltip>
-                                                                </div>
-                                                                <div className="col-sm-6 col-xs-12">
-                                                                    <Tooltip title="Realizar test" className="col-sm-12">
-                                                                        <Link to={`/test/start/${test.id_test}`} className="btn btn-danger" style={{ color: "white", textDecoration: "none"}} component={RouterLink}>
-                                                                            Realizar test
-                                                                        </Link>
-                                                                    </Tooltip>
-                                                                </div>
-                                                            </div>
-
+                                                            <Tooltip title="Ver test">
+                                                                <Link to={`/test/id/${test.id_test}`} style={{ color: "white", textDecoration: "none", cursor: "pointer" }} component={RouterLink}>
+                                                                    <img
+                                                                        alt=""
+                                                                        src={SeeTest}
+                                                                        width="45"
+                                                                        height="45"
+                                                                        className="d-inline-block align-top"
+                                                                    />
+                                                                </Link>
+                                                            </Tooltip>
+                                                            <Tooltip title="Realizar test" >
+                                                                <Link to={`/test/start/${test.id_test}`} style={{ color: "white", textDecoration: "none", cursor: "pointer" }} component={RouterLink}>
+                                                                    <img
+                                                                        alt=""
+                                                                        src={Test}
+                                                                        width="35"
+                                                                        height="35"
+                                                                        className="d-inline-block align-top"
+                                                                    />
+                                                                </Link>
+                                                            </Tooltip>
                                                         </CardActions>
                                                     </CardActionArea>
                                                 </Card1>
