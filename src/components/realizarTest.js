@@ -4,7 +4,6 @@ import { Card, Accordion, Alert, Button, Navbar } from "react-bootstrap";
 import { CircularProgress, Box, Link, Breadcrumbs, Typography, Tooltip } from '@mui/material';
 import NoHayDatos from "./nohaydatos";
 import { Link as RouterLink } from 'react-router-dom';
-import Swal from 'sweetalert2'
 import Badge from 'react-bootstrap/Badge';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -57,7 +56,6 @@ class RealizarTest extends React.Component {
                 mostrarIcono: true
             })
         }
-        console.log(this.state.mostrarIcono, window.pageYOffset, tamanoTotalYScrool);
     };
 
     componentDidMount() {
@@ -112,48 +110,52 @@ class RealizarTest extends React.Component {
     }
 
     respuestaSeleccionada(pregunta, opcionSeleccionada) {
-        var preguntaRespondida = this.state.respuestasSeleccionadas.filter(rp => rp.preguntaId === pregunta.id).length > 0;
-        if (preguntaRespondida) {
-            Swal.fire("Lo sentimos, ya has respondido esta pregunta");
-        } else {
-            var porcentajeActual = ((this.state.respuestasSeleccionadas.length + 1) * 100) / this.state.preguntas.length;
-            this.setState({
-                porcentaje: Math.round(porcentajeActual)
-            })
-            var a = this.state.aciertos;
-            var f = this.state.fallos;
-            var aux = this.state.respuestasSeleccionadas;
-
-            var opcionesPregunta = this.state.opciones.filter(o => o.id_pregunta === pregunta.id);
-            var respuestaCorrecta = opcionesPregunta.filter(op => op.opcionCorrecta === 1)[0];
-
-            aux.push({
-                "preguntaId": pregunta.id,
-                "opcionSeleccionada": opcionSeleccionada.opcion,
-                "opcionSeleccionadaId": opcionSeleccionada.id_opcion,
-                "opcionCorrecta": respuestaCorrecta.opcion,
-                "opcionCorrectaId": respuestaCorrecta.id_opcion,
-                "pregunta": pregunta.nombre
-            });
-
-            this.setState({
-                respuestasSeleccionadas: aux
-            })
-
-            let al = document.getElementById(opcionSeleccionada.id_opcion);
-            if (respuestaCorrecta.id_opcion === opcionSeleccionada.id_opcion) {
-                al.classList.remove("alert-primary");
-                al.classList.add("alert-secondary");
-                a.push(1);
-                this.setState({ aciertos: a })
-
+      
+        var aux = this.state.respuestasSeleccionadas;
+        var a = this.state.aciertos;
+        var f = this.state.fallos;
+        var opcionesPregunta = this.state.opciones.filter(o => o.id_pregunta === pregunta.id);
+        var respuestaCorrecta = opcionesPregunta.filter(op => op.opcionCorrecta === 1)[0];
+        var respuestaAborrar = aux.filter(rp => rp.preguntaId === pregunta.id);
+        if(respuestaAborrar.length>0){
+            if (respuestaCorrecta.id_opcion === respuestaAborrar[0].opcionSeleccionadaId) {
+                a.pop();
             } else {
-                al.classList.remove("alert-primary");
-                al.classList.add("alert-secondary");
-                f.push(1);
-                this.setState({ fallos: f })
+                f.pop();    
             }
+            let al = document.getElementById(respuestaAborrar[0].opcionSeleccionadaId);
+            al.classList.remove("alert-secondary");
+            al.classList.add("alert-primary");
         }
+        aux = aux.filter(rp => rp.preguntaId !== pregunta.id);
+        aux.push({
+            "preguntaId": pregunta.id,
+            "opcionSeleccionada": opcionSeleccionada.opcion,
+            "opcionSeleccionadaId": opcionSeleccionada.id_opcion,
+            "opcionCorrecta": respuestaCorrecta.opcion,
+            "opcionCorrectaId": respuestaCorrecta.id_opcion,
+            "pregunta": pregunta.nombre
+        });
+
+        var porcentajeActual = ((this.state.respuestasSeleccionadas.length + 1) * 100) / this.state.preguntas.length;
+
+        this.setState({
+            respuestasSeleccionadas: aux,
+            porcentaje: Math.round(porcentajeActual)
+        })
+
+        let al = document.getElementById(opcionSeleccionada.id_opcion);
+        al.classList.remove("alert-primary");
+        al.classList.add("alert-secondary");
+        if (respuestaCorrecta.id_opcion === opcionSeleccionada.id_opcion) {
+            a.push(1);
+            this.setState({ aciertos: a })
+        } else {
+            f.push(1);
+            this.setState({ fallos: f })
+
+        }
+
     }
 
     handleClose() {
@@ -261,10 +263,34 @@ class RealizarTest extends React.Component {
 
 
                                         <Tabs
-                                            defaultActiveKey="Aciertos"
+                                            defaultActiveKey="Todos"
                                             id="uncontrolled-tab-example"
                                             className="mb-3"
                                         >
+                                            <Tab eventKey="Todos" title="Todos">
+                                                <Accordion defaultActiveKey="0">
+                                                    {this.state.respuestasSeleccionadas.map((rp, e) => (
+                                                        <Accordion.Item eventKey={e} key={e}>
+                                                            <Accordion.Header >
+                                                                <p style={{ backgroundColor: "darkgrey !important" }}>{rp.pregunta}
+                                                                    {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
+                                                                        ? <CloseIcon style={{ marginLeft: "10px", marginBottom: "5px" }} sx={{ color: "red" }}>add_circle</CloseIcon>
+                                                                        : <CheckIcon style={{ marginLeft: "10px", marginBottom: "5px" }} color="success">add_circle</CheckIcon>}
+                                                                </p>
+                                                            </Accordion.Header>
+                                                            <Accordion.Body>
+                                                                <div className="md-12 xs-12">
+                                                                    <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#198754", color: "white", fontWeight: 600 }} >{rp.opcionCorrecta}</div>
+                                                                    {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
+                                                                        ? <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#dc3545", color: "white", fontWeight: 600 }} >{rp.opcionSeleccionada}</div>
+                                                                        : ""}
+                                                                </div>
+
+                                                            </Accordion.Body>
+                                                        </Accordion.Item>
+                                                    ))}
+                                                </Accordion>
+                                            </Tab>
                                             <Tab eventKey="Aciertos" title="Aciertos">
                                                 <Accordion defaultActiveKey="1">
                                                     {this.state.respuestasSeleccionadas.map((rp, e) => (
@@ -299,35 +325,14 @@ class RealizarTest extends React.Component {
                                                                 </Accordion.Header>
                                                                 <Accordion.Body>
                                                                     <div className="md-12 xs-12">
-                                                                        <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#dc3545", color: "white", fontWeight: 600 }} >{rp.opcionSeleccionada}</div>
+                                                                        <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#198754", color: "white", fontWeight: 600 }} >{rp.opcionCorrecta}</div>
+                                                                        {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
+                                                                            ? <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#dc3545", color: "white", fontWeight: 600 }} >{rp.opcionSeleccionada}</div>
+                                                                            : ""}
                                                                     </div>
 
                                                                 </Accordion.Body>
                                                             </Accordion.Item> : ""
-                                                    ))}
-                                                </Accordion>
-                                            </Tab>
-                                            <Tab eventKey="Todos" title="Todos">
-                                                <Accordion defaultActiveKey="0">
-                                                    {this.state.respuestasSeleccionadas.map((rp, e) => (
-                                                        <Accordion.Item eventKey={e} key={e}>
-                                                            <Accordion.Header >
-                                                                <p style={{ backgroundColor: "darkgrey !important" }}>{rp.pregunta}
-                                                                    {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
-                                                                        ? <CloseIcon style={{ marginLeft: "10px", marginBottom: "5px" }} sx={{ color: "red" }}>add_circle</CloseIcon>
-                                                                        : <CheckIcon style={{ marginLeft: "10px", marginBottom: "5px" }} color="success">add_circle</CheckIcon>}
-                                                                </p>
-                                                            </Accordion.Header>
-                                                            <Accordion.Body>
-                                                                <div className="md-12 xs-12">
-                                                                    <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#198754", color: "white", fontWeight: 600 }} >{rp.opcionCorrecta}</div>
-                                                                    {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
-                                                                        ? <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#dc3545", color: "white", fontWeight: 600 }} >{rp.opcionSeleccionada}</div>
-                                                                        : ""}
-                                                                </div>
-
-                                                            </Accordion.Body>
-                                                        </Accordion.Item>
                                                     ))}
                                                 </Accordion>
                                             </Tab>
