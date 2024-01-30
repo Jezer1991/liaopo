@@ -13,8 +13,9 @@ import Row from 'react-bootstrap/Row';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
 class RealizarTest extends React.Component {
 
@@ -31,13 +32,36 @@ class RealizarTest extends React.Component {
             aciertos: [],
             fallos: [],
             porcentaje: 0,
+            mostrarIcono: false
         }
         this.respuestaSeleccionada = this.respuestaSeleccionada.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleShow = this.handleShow.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
     }
+    scrollToElement() {
+        window.scroll({
+            top: document.body.scrollHeight,
+            behavior: "smooth",
+        });
+    };
+
+    handleScroll() {
+        var tamanoTotalYScrool = document.body.scrollHeight - (20 * document.body.scrollHeight) / 100;
+        if (window.pageYOffset >= tamanoTotalYScrool) {
+            this.setState({
+                mostrarIcono: false
+            })
+        } else {
+            this.setState({
+                mostrarIcono: true
+            })
+        }
+        console.log(this.state.mostrarIcono, window.pageYOffset, tamanoTotalYScrool);
+    };
 
     componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll)
 
         const id_test = window.location.pathname.split("/")[3];
         setTimeout(() => {
@@ -119,13 +143,13 @@ class RealizarTest extends React.Component {
             let al = document.getElementById(opcionSeleccionada.id_opcion);
             if (respuestaCorrecta.id_opcion === opcionSeleccionada.id_opcion) {
                 al.classList.remove("alert-primary");
-                al.classList.add("alert-success");
+                al.classList.add("alert-secondary");
                 a.push(1);
                 this.setState({ aciertos: a })
 
             } else {
                 al.classList.remove("alert-primary");
-                al.classList.add("alert-danger");
+                al.classList.add("alert-secondary");
                 f.push(1);
                 this.setState({ fallos: f })
             }
@@ -164,20 +188,15 @@ class RealizarTest extends React.Component {
                         </Breadcrumbs>
                         <Card className="mb-2">
 
-                            <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2" style={{ position: 'fixed', top: '20%', zIndex: 1, left: "15px", minWidth: "100px"}}>
-                                <ProgressBar label={`${this.state.porcentaje}%`} animated now={this.state.porcentaje} />
-                                {this.state.porcentaje >= 100 ?
-                                    <>
-                                        <Tooltip title="Terminar test">
-                                            <Button variant="success" style={{ padding: "10px", margin: "10px" }} onClick={this.handleShow}><ArrowRightIcon /></Button>
-                                        </Tooltip>
+                            <div style={{ position: 'fixed', bottom: '50px', zIndex: 1, right: 0, width: "100%", alignItems: "center" }}>
 
-                                        <Tooltip title="Reiniciar test">
-                                            <Button variant="warning" style={{ padding: "10px", margin: "10px" }} onClick={() => { window.location.reload(true); }}><RestartAltIcon /></Button>
-                                        </Tooltip>
-                                    </>
-                                    : ""}
-
+                                {this.state.porcentaje >= 100
+                                    ? <Tooltip title="finalizar">
+                                        <Button style={{ cursor: "pointer", display: this.state.mostrarIcono ? "block" : "none", margin: "0px auto" }} >
+                                            <ArrowCircleDownIcon onClick={this.scrollToElement} />
+                                        </Button>
+                                    </Tooltip>
+                                    : <ProgressBar label={`${this.state.porcentaje}%`} animated now={this.state.porcentaje} style={{ width: "50%", margin: "0px auto" }} />}
                             </div>
 
                             <Navbar className="bg-body-tertiary mb-5" bg="dark" data-bs-theme="dark">
@@ -212,7 +231,7 @@ class RealizarTest extends React.Component {
                             </Card>
                         ))}
 
-                        {this.state.porcentaje >= 100 ? <Button className="mt-5" style={{ width: "100%" }} onClick={this.handleShow}>Finalizar</Button> : ""}
+                        {this.state.porcentaje >= 100 ? <Button ref={this.refFinalizar} className="mt-5" style={{ width: "100%" }} onClick={this.handleShow}>Finalizar</Button> : ""}
 
                         <Modal show={this.state.show} onHide={this.handleClose}
                             size="xl"
@@ -240,28 +259,80 @@ class RealizarTest extends React.Component {
 
                                     <Row>
 
-                                        <Accordion defaultActiveKey="0">
-                                            {this.state.respuestasSeleccionadas.map((rp, e) => (
-                                                <Accordion.Item eventKey={e} key={e}>
-                                                    <Accordion.Header >
-                                                        <p style={{ backgroundColor: "darkgrey !important" }}>{rp.pregunta}
-                                                            {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
-                                                                ? <CloseIcon style={{ marginLeft: "10px", marginBottom: "5px" }} sx={{ color: "red" }}>add_circle</CloseIcon>
-                                                                : <CheckIcon style={{ marginLeft: "10px", marginBottom: "5px" }} color="success">add_circle</CheckIcon>}
-                                                        </p>
-                                                    </Accordion.Header>
-                                                    <Accordion.Body>
-                                                        <div className="md-12 xs-12">
-                                                            <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#198754", color: "white", fontWeight: 600 }} >{rp.opcionCorrecta}</div>
-                                                            {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
-                                                                ? <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#dc3545", color: "white", fontWeight: 600 }} >{rp.opcionSeleccionada}</div>
-                                                                : ""}
-                                                        </div>
 
-                                                    </Accordion.Body>
-                                                </Accordion.Item>
-                                            ))}
-                                        </Accordion>
+                                        <Tabs
+                                            defaultActiveKey="Aciertos"
+                                            id="uncontrolled-tab-example"
+                                            className="mb-3"
+                                        >
+                                            <Tab eventKey="Aciertos" title="Aciertos">
+                                                <Accordion defaultActiveKey="1">
+                                                    {this.state.respuestasSeleccionadas.map((rp, e) => (
+                                                        rp.opcionCorrectaId === rp.opcionSeleccionadaId
+                                                            ? <Accordion.Item eventKey={e} key={e}>
+                                                                <Accordion.Header >
+                                                                    <p style={{ backgroundColor: "darkgrey !important" }}>{rp.pregunta}
+                                                                        <CheckIcon style={{ marginLeft: "10px", marginBottom: "5px" }} color="success">add_circle</CheckIcon>
+                                                                    </p>
+                                                                </Accordion.Header>
+                                                                <Accordion.Body>
+                                                                    <div className="md-12 xs-12">
+                                                                        <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#198754", color: "white", fontWeight: 600 }} >{rp.opcionCorrecta}</div>
+                                                                    </div>
+
+                                                                </Accordion.Body>
+                                                            </Accordion.Item>
+                                                            : ""
+                                                    ))}
+                                                </Accordion>
+                                            </Tab>
+                                            <Tab eventKey="Fallos" title="Fallos">
+                                                <Accordion defaultActiveKey="0">
+                                                    {this.state.respuestasSeleccionadas.map((rp, e) => (
+                                                        rp.opcionCorrectaId !== rp.opcionSeleccionadaId
+
+                                                            ? <Accordion.Item eventKey={e} key={e}>
+                                                                <Accordion.Header >
+                                                                    <p style={{ backgroundColor: "darkgrey !important" }}>{rp.pregunta}
+                                                                        <CloseIcon style={{ marginLeft: "10px", marginBottom: "5px" }} sx={{ color: "red" }}>add_circle</CloseIcon>
+                                                                    </p>
+                                                                </Accordion.Header>
+                                                                <Accordion.Body>
+                                                                    <div className="md-12 xs-12">
+                                                                        <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#dc3545", color: "white", fontWeight: 600 }} >{rp.opcionSeleccionada}</div>
+                                                                    </div>
+
+                                                                </Accordion.Body>
+                                                            </Accordion.Item> : ""
+                                                    ))}
+                                                </Accordion>
+                                            </Tab>
+                                            <Tab eventKey="Todos" title="Todos">
+                                                <Accordion defaultActiveKey="0">
+                                                    {this.state.respuestasSeleccionadas.map((rp, e) => (
+                                                        <Accordion.Item eventKey={e} key={e}>
+                                                            <Accordion.Header >
+                                                                <p style={{ backgroundColor: "darkgrey !important" }}>{rp.pregunta}
+                                                                    {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
+                                                                        ? <CloseIcon style={{ marginLeft: "10px", marginBottom: "5px" }} sx={{ color: "red" }}>add_circle</CloseIcon>
+                                                                        : <CheckIcon style={{ marginLeft: "10px", marginBottom: "5px" }} color="success">add_circle</CheckIcon>}
+                                                                </p>
+                                                            </Accordion.Header>
+                                                            <Accordion.Body>
+                                                                <div className="md-12 xs-12">
+                                                                    <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#198754", color: "white", fontWeight: 600 }} >{rp.opcionCorrecta}</div>
+                                                                    {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
+                                                                        ? <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#dc3545", color: "white", fontWeight: 600 }} >{rp.opcionSeleccionada}</div>
+                                                                        : ""}
+                                                                </div>
+
+                                                            </Accordion.Body>
+                                                        </Accordion.Item>
+                                                    ))}
+                                                </Accordion>
+                                            </Tab>
+                                        </Tabs>
+
                                     </Row>
                                 </Container>
 
