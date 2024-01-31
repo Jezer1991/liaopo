@@ -137,7 +137,7 @@ class RealizarTest extends React.Component {
             "pregunta": pregunta.nombre
         });
 
-        var porcentajeActual = ((this.state.respuestasSeleccionadas.length + 1) * 100) / this.state.preguntas.length;
+        var porcentajeActual = (aux.length * 100) / this.state.preguntas.length;
 
         this.setState({
             respuestasSeleccionadas: aux,
@@ -192,19 +192,13 @@ class RealizarTest extends React.Component {
 
                             <div style={{ position: 'fixed', bottom: '50px', zIndex: 1, right: 0, width: "100%", alignItems: "center" }}>
 
-                                {this.state.porcentaje >= 100
-                                    ? <Tooltip title="finalizar">
-                                        <Button style={{ cursor: "pointer", display: this.state.mostrarIcono ? "block" : "none", margin: "0px auto" }} >
+                                    <Tooltip title="finalizar">
+                                        <Button style={{ cursor: "pointer", display: this.state.mostrarIcono && this.state.porcentaje>=100 ? "block" : "none", margin: "0px auto", marginBottom: "10px" }} >
                                             <ArrowCircleDownIcon onClick={this.scrollToElement} />
                                         </Button>
                                     </Tooltip>
-                                    : <ProgressBar label={`${this.state.porcentaje}%`} animated now={this.state.porcentaje} style={{ width: "50%", margin: "0px auto" }} />}
+                                    <ProgressBar label={`${this.state.porcentaje}%`} animated now={this.state.porcentaje} style={{ width: "50%", margin: "0px auto" }} />
                             </div>
-
-                            <Navbar className="bg-body-tertiary mb-5" bg="dark" data-bs-theme="dark">
-                                <Container>
-                                </Container>
-                            </Navbar>
 
                             <Card.Img variant="top" height="100px" src="https://i0.wp.com/latorruana.com/wp-content/uploads/2022/09/estuche-no-puedo-tengo-opos.jpg?fit=1920%2C1920&ssl=1" style={{ objectFit: "cover" }} />
                             <Card.Body>
