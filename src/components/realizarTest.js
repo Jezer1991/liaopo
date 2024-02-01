@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Card, Accordion, Alert, Button, Navbar } from "react-bootstrap";
+import { Card, Accordion, Alert, Button } from "react-bootstrap";
 import { CircularProgress, Box, Link, Breadcrumbs, Typography, Tooltip } from '@mui/material';
 import NoHayDatos from "./nohaydatos";
 import { Link as RouterLink } from 'react-router-dom';
