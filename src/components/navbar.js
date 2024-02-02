@@ -36,7 +36,6 @@ class NavBar extends React.Component {
                     </Navbar.Brand>
                     <Nav className="me-auto mt-5">
                         <Nav.Link href="/">Bloques</Nav.Link>
-                        <Nav.Link href="/videos">Videos</Nav.Link>
                     </Nav>
                     {window.sessionStorage.getItem("usuarioLogueado") === "true" ?
                         <Dropdown align="end" as={ButtonGroup} className="mt-5">
