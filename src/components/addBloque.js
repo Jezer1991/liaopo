@@ -74,11 +74,19 @@ class AddBloque extends React.Component {
                     <input id="prevPage" name="prevPage" type="hidden" value={window.location.href} />
                     <div style={{ width: "30%", margin: "0px auto", textAlign: "center" }} className="mt-5 row">
                         <TextField
+                            className="mb-5"
                             required
                             id="nombre"
                             name="nombre"
                             label="Nombre del Bloque"
                             defaultValue="Bloque 1"
+                        />
+                        <TextField
+                            type="number"
+                            required
+                            id="bloque"
+                            name="bloque"
+                            label="bloque"
                         />
                         <Button className="mt-5" type="submit" variant="contained">Add</Button>
                     </div>
