@@ -227,7 +227,7 @@ class RealizarTest extends React.Component {
                             </Card>
                         ))}
 
-                        {this.state.porcentaje >= 100 ? <Button ref={this.refFinalizar} className="mt-5" style={{ width: "100%" }} onClick={this.handleShow}>Finalizar</Button> : ""}
+                        <Button ref={this.refFinalizar} className="mt-5" style={{ width: "100%" }} onClick={this.handleShow}>Finalizar</Button>
 
                         <Modal show={this.state.show} onHide={this.handleClose}
                             size="xl"
@@ -254,8 +254,6 @@ class RealizarTest extends React.Component {
                                     </Row>
 
                                     <Row>
-
-
                                         <Tabs
                                             defaultActiveKey="Todos"
                                             id="uncontrolled-tab-example"
