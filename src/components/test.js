@@ -112,22 +112,26 @@ class Test extends React.Component {
                         </Card>
                         <Accordion defaultActiveKey={this.state.t} alwaysOpen>
                             {this.state.preguntas.map((pregunta, i) => (
-                                <Accordion.Item key={i} eventKey={i}>
+                                <Accordion.Item key={i} eventKey={i} >
                                     <Accordion.Header >
-                                        {`Pregunta ${i + 1}`}
+                                        {`Pregunta ${i + 1} `}
+                                        {pregunta.esReserva === 1 ?<strong style={{margin: "0px auto", color:"rgb(108,105,105)"}}>PREGUNTA DE RESERVA</strong>:""}
+                                        {pregunta.anulada === 1 ?<strong style={{margin: "0px auto", color:"red"}}>ESTA PREGUNTA FUE ELIMINADA DEL EXAMEN</strong>:""}
                                     </Accordion.Header>
 
                                     <Accordion.Body>
                                         <Card className="mb-2">
-                                            <Card.Header><strong className="mr-5">{`Año ${pregunta.annho}`}</strong>
+                                            <Card.Header ><strong className="mr-5">{`Año ${pregunta.annho}`} </strong>
                                             </Card.Header>
                                             <Card.Body>{pregunta.nombre}
                                             </Card.Body>
+                                            {pregunta.anulada === 0?
                                             <Button onClick={(e) => { this.mostrarRespuesta(`RP${i}`) }}>
                                                 <Tooltip title="Ver la respuesta correcta" style={{ marginLeft: "10px", marginBottom: "10px" }}>
                                                     <TipsAndUpdatesIcon />
                                                 </Tooltip>
-                                            </Button>
+                                            </Button>:""
+                                            }
                                         </Card>
                                         {this.state.opciones.filter(o => o.id_pregunta === pregunta.id).map((opcion, e) => (
                                             <React.Fragment key={e}>

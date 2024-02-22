@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box,CircularProgress,TextField, FormControl, InputLabel, Select, MenuItem, OutlinedInput } from '@mui/material';
+import { Box, CircularProgress, TextField, FormControl, InputLabel, Select, MenuItem, OutlinedInput } from '@mui/material';
 import { Button } from 'react-bootstrap';
 
 class Prueba extends React.Component {
@@ -13,18 +13,19 @@ class Prueba extends React.Component {
             nombreTemaCorto: "",
             nombreTemaLargo: "",
             loading: false,
+            esBloqueExamen: 0
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleBloque = this.handleBloque.bind(this);
         this.handleTipoTest = this.handleTipoTest.bind(this);
         this.handleNombreTemaCorto = this.handleNombreTemaCorto.bind(this);
         this.handleNombreTemaLargo = this.handleNombreTemaLargo.bind(this);
-
+        this.handleEsBloqueExamen = this.handleEsBloqueExamen.bind(this);
     }
 
     componentWillMount() {
         setTimeout(() => {
-            fetch(`${process.env.REACT_APP_API}bloques`)
+            fetch(`${process.env.REACT_APP_API}allBloques`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -68,10 +69,14 @@ class Prueba extends React.Component {
         });
     }
 
-    handleChange(e) {
+    handleEsBloqueExamen(e) {
         this.setState({
-            loading: true
-        })
+            esBloqueExamen: e.target.value,
+        });
+    }
+
+
+    handleChange(e) {
         if (this.state.bloqueSeleccionado !== null && this.state.bloqueSeleccionado !== "") {
             var test = document.getElementById("texto").value;
             var a1 = test.split("//////");
@@ -80,11 +85,13 @@ class Prueba extends React.Component {
             var tema = this.state.nombreTemaCorto;
             var nombreTema = this.state.nombreTemaLargo;
             var tipoTest = this.state.tipoTestSeleccionado;
+            var esBloqueDeExamen = this.state.esBloqueExamen;
 
             console.log("Bloque seleccionado ", bloque);
             console.log("Nombre Tema corto ", tema);
             console.log("Nombre Tema largo ", nombreTema);
             console.log("Tipo test seleccionado ", tipoTest);
+            console.log("Es bloque de examen ", esBloqueDeExamen);
 
             const requestOptionsTema = {
                 method: 'POST',
@@ -122,10 +129,9 @@ class Prueba extends React.Component {
                             }).then(data => {
                                 var idTest = data.result.insertId;
                                 console.log("Se ha insertado el test", idTest);
-
+                                console.log("Hay un total de preguntas: ", a1.length);
                                 a1.map((t, e) => {
                                     var aux = t.substr(test.indexOf("d)"));
-                                    console.log(aux);
                                     var le = t.substr(aux.indexOf("d)"), aux.indexOf(".") + 1);
                                     var start = t.indexOf("Examen");
                                     var final = t.indexOf("d)") + le.length;
@@ -138,7 +144,6 @@ class Prueba extends React.Component {
                                     var sinEspacios = separacionTest.trim().replaceAll("\n", "<br>")
                                     var partes = sinEspacios.split("<br>");
                                     partes = partes.filter(element => element.length > 0);
-                                    console.log(partes);
                                     var anho = sinEspacios.substr(0, sinEspacios.indexOf("<br>"));
                                     sinEspacios = sinEspacios.substr(anho.length + 4);
                                     console.log(partes);
@@ -149,7 +154,7 @@ class Prueba extends React.Component {
                                             anho: partes[0].substr(partes[0].length - 4, partes[0].length)
                                         })
                                     };
-
+                                    
                                     fetch(`${process.env.REACT_APP_API}anho`, requestOptionsAnho)
                                         .then(data => {
                                             return data.json();
@@ -218,60 +223,74 @@ class Prueba extends React.Component {
     render() {
         return (
             this.state.loading ?
-            <Box sx={{ width: '90%', alignItems: "center", textAlign: "center" }}>
-                <CircularProgress />
-            </Box>:
-            <div style={{ margin: "10px", paddingBottom: "60px" }}>
-                <TextField fullWidth
-                    className="mt-5"
-                    required
-                    id="nombre_tema_corto"
-                    name="nombre_tema_corto"
-                    label="Nombre Tema corto"
-                    onChange={this.handleNombreTemaCorto}
-                />
-                <TextField fullWidth
-                    className="mt-5"
-                    required
-                    id="nombre_tema_largo"
-                    name="nombre_tema_largo"
-                    label="Nombre Tema largo"
-                    onChange={this.handleNombreTemaLargo}
-                />
-                <FormControl fullWidth className="mt-5">
-                    <InputLabel id="label-bloque">Bloque</InputLabel>
-                    <Select
-                        labelId="label-bloque"
-                        value={this.state.bloqueSeleccionado}
-                        onChange={this.handleBloque}
-                        name="bloque"
-                        id="bloque"
-                        input={<OutlinedInput label="Name" />}
-                    >
-                        {this.state.bloques.map((bloque) => (
-                            <MenuItem key={bloque.id} value={bloque.id}>{bloque.nombre}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                <Box sx={{ width: '90%', alignItems: "center", textAlign: "center" }}>
+                    <CircularProgress />
+                </Box> :
+                <div style={{ margin: "10px", paddingBottom: "60px" }}>
+                    <TextField fullWidth
+                        className="mt-5"
+                        required
+                        id="nombre_tema_corto"
+                        name="nombre_tema_corto"
+                        label="Nombre Tema corto"
+                        onChange={this.handleNombreTemaCorto}
+                    />
+                    <TextField fullWidth
+                        className="mt-5"
+                        required
+                        id="nombre_tema_largo"
+                        name="nombre_tema_largo"
+                        label="Nombre Tema largo"
+                        onChange={this.handleNombreTemaLargo}
+                    />
+                    <FormControl fullWidth className="mt-5">
+                        <InputLabel id="label-bloque">Bloque</InputLabel>
+                        <Select
+                            labelId="label-bloque"
+                            value={this.state.bloqueSeleccionado}
+                            onChange={this.handleBloque}
+                            name="bloque"
+                            id="bloque"
+                            input={<OutlinedInput label="Name" />}
+                        >
+                            {this.state.bloques.map((bloque) => (
+                                <MenuItem key={bloque.id} value={bloque.id}>{bloque.nombre}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <FormControl fullWidth className="mt-5">
+                        <InputLabel id="label-anho">¿Es un bloque para Examen?</InputLabel>
+                        <Select
+                            labelId="label-anho"
+                            name="esExamen"
+                            id="esExamen"
+                            value={this.state.esBloqueExamen}
+                            onChange={this.handleEsBloqueExamen}
+                            input={<OutlinedInput label="Name" />}
+                        >
+                            <MenuItem key={1} value={1}>Si</MenuItem>
+                            <MenuItem key={0} value={0}>No</MenuItem>
+                        </Select>
+                    </FormControl>
 
-                <FormControl fullWidth className="mt-5">
-                    <InputLabel id="label-tipoTest">Tipo Test</InputLabel>
-                    <Select
-                        labelId="label-tipoTest"
-                        value={this.state.tipoTestSeleccionado}
-                        onChange={this.handleTipoTest}
-                        name="tipoTest"
-                        id="tipoTest"
-                        input={<OutlinedInput label="Name" />}
-                    >
-                        {this.state.tiposTest.map((tipoTest) => (
-                            <MenuItem key={tipoTest.id} value={tipoTest.id}>{tipoTest.nombre}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-                <textarea rows={20} className="col-sm-12" id="texto" type="text"></textarea>
-                <Button onClick={this.handleChange}>Guardar</Button>
-            </div>
+                    <FormControl fullWidth className="mt-5 mb-5">
+                        <InputLabel id="label-tipoTest">Tipo Test</InputLabel>
+                        <Select
+                            labelId="label-tipoTest"
+                            value={this.state.tipoTestSeleccionado}
+                            onChange={this.handleTipoTest}
+                            name="tipoTest"
+                            id="tipoTest"
+                            input={<OutlinedInput label="Name" />}
+                        >
+                            {this.state.tiposTest.map((tipoTest) => (
+                                <MenuItem key={tipoTest.id} value={tipoTest.id}>{tipoTest.nombre}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <textarea rows={20} className="col-sm-12" id="texto" type="text"></textarea>
+                    <Button onClick={this.handleChange}>Guardar</Button>
+                </div>
         )
     }
 }

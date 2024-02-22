@@ -34,7 +34,7 @@ class AddTest extends React.Component {
     componentWillMount() {
 
         setTimeout(() => {
-            fetch(`${process.env.REACT_APP_API}bloques`)
+            fetch(`${process.env.REACT_APP_API}allBloques`)
                 .then(data => {
                     return data.json();
                 }).then(data => {

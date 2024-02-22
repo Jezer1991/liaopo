@@ -116,6 +116,15 @@ class AddPregunta extends React.Component {
                             maxRows={3}
                             label="Pregunta"
                         />
+                        <TextField
+                        className="mt-5"
+                            type="number"
+                            required
+                            id="orden"
+                            name="orden"
+                            maxRows={3}
+                            label="Orden"
+                        />
                         <FormControl fullWidth className="mt-5">
                             <InputLabel id="label-anho">Año</InputLabel>
                             <Select
@@ -131,6 +140,33 @@ class AddPregunta extends React.Component {
                                 ))}
                             </Select>
                         </FormControl>
+
+                        <FormControl fullWidth className="mt-5">
+                            <InputLabel id="label-anho">¿Es Reserva?</InputLabel>
+                            <Select
+                                labelId="label-anho"
+                                name="esReserva"
+                                id="esReserva"
+                                input={<OutlinedInput label="Name" />}
+                            >
+                                <MenuItem key={1} value={1}>Si</MenuItem>
+                                <MenuItem key={0} value={0}>No</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <FormControl fullWidth className="mt-5">
+                            <InputLabel id="label-anho">¿Es pregunta anulada?</InputLabel>
+                            <Select
+                                labelId="label-anho"
+                                name="anulada"
+                                id="anulada"
+                                input={<OutlinedInput label="Name" />}
+                            >
+                                <MenuItem key={1} value={1}>Si</MenuItem>
+                                <MenuItem key={0} value={0}>No</MenuItem>
+                            </Select>
+                        </FormControl>
+
                         <Button className="mt-5" type="submit" variant="contained">Add</Button>
                     </div>
                 </form >

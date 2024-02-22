@@ -1,6 +1,7 @@
 import React from "react";
 
-import { Link, TextField, Button, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, IconButton } from '@mui/material';
+import { Link, TextField, Button, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, IconButton,FormControl,InputLabel, Select,OutlinedInput,MenuItem } from '@mui/material';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from 'sweetalert2'
 import axios from 'axios';
@@ -17,7 +18,7 @@ class AddBloque extends React.Component {
     }
     componentWillMount() {
         setTimeout(() => {
-            fetch(`${process.env.REACT_APP_API}bloques`)
+            fetch(`${process.env.REACT_APP_API}allBloques`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -88,6 +89,18 @@ class AddBloque extends React.Component {
                             name="bloque"
                             label="bloque"
                         />
+                        <FormControl fullWidth className="mt-5">
+                            <InputLabel id="label-anho">¿Es un bloque para Examen?</InputLabel>
+                            <Select
+                                labelId="label-anho"
+                                name="esExamen"
+                                id="esExamen"
+                                input={<OutlinedInput label="Name" />}
+                            >
+                                <MenuItem key={1} value={1}>Si</MenuItem>
+                                <MenuItem key={0} value={0}>No</MenuItem>
+                            </Select>
+                        </FormControl>
                         <Button className="mt-5" type="submit" variant="contained">Add</Button>
                     </div>
                 </form >
@@ -98,6 +111,7 @@ class AddBloque extends React.Component {
                                 <TableRow>
                                     <TableCell align="center">ID</TableCell>
                                     <TableCell align="center">Nombre</TableCell>
+                                    <TableCell align="center">¿Es de examen?</TableCell>
                                     <TableCell align="center" colSpan={2}></TableCell>
                                 </TableRow>
                             </TableHead>
@@ -109,6 +123,7 @@ class AddBloque extends React.Component {
                                     >
                                         <TableCell align="center">{bloque.id}</TableCell>
                                         <TableCell align="center">{bloque.nombre}</TableCell>
+                                        <TableCell align="center">{bloque.esExamen === 1 ? "SI" : "NO"}</TableCell>
                                         <TableCell align="center">
                                             <IconButton aria-label="delete" color="error" onClick={(e) => { this.delete(e, bloque.id) }}>
                                                 <DeleteIcon />
