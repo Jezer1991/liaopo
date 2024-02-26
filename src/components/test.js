@@ -175,7 +175,7 @@ class Test extends React.Component {
 
     pintarSupuesto(supuesto, i) {
         return (
-            <Accordion key={`supuesto${i}`} defaultExpanded style={{ background: "rgb(229, 246, 253)", borderRadius: "10px", color: "rgb(1, 67, 97)", fontWeight: "400", marginBottom: "10px" }}>
+            <Accordion key={`supuesto${i}`} defaultExpanded style={{ background: "rgb(229, 246, 253)", color: "rgb(1, 67, 97)", fontWeight: "400"}}>
                     <Paper elevation={3} style={{ padding: "30px", display: this.state.ocultarSupuesto ? "none" : "block" }} >
                         {supuesto.split("\\n").map(p => {
                             return <p>{p}</p>
@@ -223,7 +223,7 @@ class Test extends React.Component {
                                 return (
                                     <React.Fragment>
 
-                                        <Accordion TransitionProps={{ timeout: 1 }} key={i} id={i} defaultExpanded  style={{ color: "#666666",borderRadius: "10px", background: this.state.colores[ Math.floor(Math.random() * this.state.colores.length)], fontWeight: "700", marginBottom: "5px"}} >
+                                        <Accordion TransitionProps={{ timeout: 1 }} key={i} id={i} defaultExpanded  style={{ color: "#666666",background: this.state.colores[ Math.floor(Math.random() * this.state.colores.length)], fontWeight: "700"}} >
                                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header" > {test.nombre_test}</AccordionSummary>
                                             <AccordionDetails>
                                                 {test.supuesto !== null ? this.pintarSupuesto(test.supuesto) : ""}
