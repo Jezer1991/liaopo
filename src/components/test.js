@@ -13,6 +13,7 @@ class Test extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            colores:["rgb(237, 247, 237)","rgb(229, 246, 253)","rgb(255, 244, 229)","rgb(253, 237, 237)"],
             test: null,
             loading: true,
             mapaTest: []
@@ -175,13 +176,11 @@ class Test extends React.Component {
     pintarSupuesto(supuesto, i) {
         return (
             <Accordion key={`supuesto${i}`} defaultExpanded style={{ background: "rgb(229, 246, 253)", borderRadius: "10px", color: "rgb(1, 67, 97)", fontWeight: "400", marginBottom: "10px" }}>
-                <AccordionDetails style={{ padding: "50px" }}>
-                    <Paper elevation={3} style={{ padding: "10px", display: this.state.ocultarSupuesto ? "none" : "block" }} >
+                    <Paper elevation={3} style={{ padding: "30px", display: this.state.ocultarSupuesto ? "none" : "block" }} >
                         {supuesto.split("\\n").map(p => {
                             return <p>{p}</p>
                         })}
                     </Paper>
-                </AccordionDetails>
             </Accordion>
         )
     }
@@ -224,7 +223,7 @@ class Test extends React.Component {
                                 return (
                                     <React.Fragment>
 
-                                        <Accordion TransitionProps={{ timeout: 1 }} key={i} id={i} defaultExpanded style={{ borderRadius: "10px", color: "rgb(1, 67, 97)", fontWeight: "400", marginBottom: "5px" }}>
+                                        <Accordion TransitionProps={{ timeout: 1 }} key={i} id={i} defaultExpanded  style={{ color: "#666666",borderRadius: "10px", background: this.state.colores[ Math.floor(Math.random() * this.state.colores.length)], fontWeight: "700", marginBottom: "5px"}} >
                                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header" > {test.nombre_test}</AccordionSummary>
                                             <AccordionDetails>
                                                 {test.supuesto !== null ? this.pintarSupuesto(test.supuesto) : ""}
