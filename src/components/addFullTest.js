@@ -24,7 +24,7 @@ class AddFullTest extends React.Component {
 
     componentWillMount() {
         setTimeout(() => {
-            fetch(`${process.env.REACT_APP_API}bloques`)
+            fetch(`${process.env.REACT_APP_API}allBloques`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
@@ -73,7 +73,7 @@ class AddFullTest extends React.Component {
             loading: true
         })
         if (this.state.bloqueSeleccionado !== null && this.state.bloqueSeleccionado !== "") {
-            //var test = document.getElementById("texto").value;
+            var test = document.getElementById("texto").value;
             var a1 = test.split("//////");
 
             var bloque = this.state.bloqueSeleccionado;

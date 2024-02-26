@@ -1,0 +1,2 @@
+\r\n[0-9][0-9].  => "" Quita al comienzo de cada linea la numeracion de la pregunta
+\r\n[0-9]. => ""

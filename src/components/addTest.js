@@ -1,9 +1,9 @@
 import React from "react";
 
-import { Alert, CircularProgress, Box, Link, Button, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, IconButton, FormControl, InputLabel, Select, MenuItem, OutlinedInput } from '@mui/material';
+import { Checkbox, Alert, CircularProgress, Box, Link, Button, TableContainer, Table, TableBody, TableCell, TableHead, TableRow, Paper, IconButton, FormControl, InputLabel, Select, MenuItem, OutlinedInput } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Link as RouterLink } from 'react-router-dom';
-
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import Swal from 'sweetalert2'
 import axios from 'axios';
@@ -213,25 +213,25 @@ class AddTest extends React.Component {
                             </FormControl>
 
                             <FormControl fullWidth className="mt-5">
-                            <InputLabel id="label-bloque">Temas</InputLabel>
-                            <Select
-                                labelId="label-bloque"
-                                value={this.state.temaSeleccionado}
-                                onChange={this.handleChangeTema}
-                                name="id_tema"
-                                id="id_tema"
-                                input={<OutlinedInput label="Name" />}
-                            >
+                                <InputLabel id="label-bloque">Temas</InputLabel>
+                                <Select
+                                    labelId="label-bloque"
+                                    value={this.state.temaSeleccionado}
+                                    onChange={this.handleChangeTema}
+                                    name="id_tema"
+                                    id="id_tema"
+                                    input={<OutlinedInput label="Name" />}
+                                >
 
-                                {
-                                    this.state.temasE.length > 0 && this.state.temasE !== undefined ?
-                                        this.state.temasE.map((tema) => (
-                                            <MenuItem key={tema.id} value={tema.id}>{`${tema.nombre_bloque} - ${tema.nombre_corto}`}</MenuItem>
-                                        ))
-                                        : <MenuItem >No hay temas para este bloque</MenuItem>
-                                }
-                            </Select>
-                        </FormControl>
+                                    {
+                                        this.state.temasE.length > 0 && this.state.temasE !== undefined ?
+                                            this.state.temasE.map((tema) => (
+                                                <MenuItem key={tema.id} value={tema.id}>{`${tema.nombre_bloque} - ${tema.nombre_corto}`}</MenuItem>
+                                            ))
+                                            : <MenuItem >No hay temas para este bloque</MenuItem>
+                                    }
+                                </Select>
+                            </FormControl>
                             <Button className="mt-5" type="submit" variant="contained">Add</Button>
                         </div>
                     </form>
@@ -246,12 +246,13 @@ class AddTest extends React.Component {
                                         <TableCell align="center">Nombre tipo Test</TableCell>
                                         <TableCell align="center">ID Bloque</TableCell>
                                         <TableCell align="center">Nombre del Bloque</TableCell>
+                                        <TableCell align="center">Tiene subtemas</TableCell>
                                         <TableCell align="center" colSpan={2}></TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {this.state.tests.map((test) => (
-                                        <TableRow
+                                        < TableRow
                                             key={test.id_test}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                         >
@@ -266,14 +267,25 @@ class AddTest extends React.Component {
                                             <TableCell align="center">{test.id_bloque}</TableCell>
                                             <TableCell align="center">{test.nombre_bloque}</TableCell>
                                             <TableCell align="center">
+                                                <Checkbox
+                                                    disabled
+                                                    checked={test.tieneSubtemas}
+                                                />
+                                            </TableCell>
+
+                                            <TableCell align="center">
                                                 <IconButton aria-label="delete" color="error" onClick={(e) => { this.delete(e, test.id_test) }}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                             </TableCell>
                                             <TableCell align="center">
-                                                <Link to={`/add/pregunta/${test.id_test}`} color="success" underline="hover" component={RouterLink}>
-                                                    <QuestionAnswerIcon />
-                                                </Link>
+                                                {!test.tieneSubtemas ?
+                                                    <Link to={`/add/pregunta/${test.id_test}`} color="success" underline="hover" component={RouterLink}>
+                                                        <QuestionAnswerIcon />
+                                                    </Link>
+                                                    : <Link to={`/add/compuesto/${test.id_test}`} color="success" underline="hover" component={RouterLink}>
+                                                        <ArrowForwardIcon />
+                                                    </Link>}
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -281,7 +293,7 @@ class AddTest extends React.Component {
                             </Table>
                         </TableContainer>
                     </div>
-                </React.Fragment>
+                </React.Fragment >
         );
 
     }
