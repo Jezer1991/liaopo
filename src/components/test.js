@@ -84,6 +84,7 @@ class Test extends React.Component {
 
                                                 })
                                         })
+                                    return "";
                                 })
                                 this.setState({
                                     mapaTest: l
@@ -103,7 +104,7 @@ class Test extends React.Component {
     formatPreguntas(mPreguntas, mOpciones) {
         var auxPreguntas = [];
         mPreguntas.map(pregunta => {
-            auxPreguntas.push({
+            return auxPreguntas.push({
                 anho: pregunta.anho,
                 annho: pregunta.annho,
                 anulada: pregunta.anulada,
@@ -146,8 +147,8 @@ class Test extends React.Component {
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2-content" id="panel2-header" > {pregunta.nombre}</AccordionSummary>
                 {pregunta.anulada === 0 ?
                     <Tooltip title="Ver la respuesta correcta" >
-                        <Button style={{ marginLeft: "18px", background: "rgb(255, 244, 229)", borderColor: "rgb(255, 244, 229)", color: "rgb(102, 60, 0)" }} 
-                        onClick={(e) => { this.mostrarRespuesta(`c${tipoAcordion}${i}`) }}>
+                        <Button style={{ marginLeft: "18px", background: "rgb(255, 244, 229)", borderColor: "rgb(255, 244, 229)", color: "rgb(102, 60, 0)" }}
+                            onClick={(e) => { this.mostrarRespuesta(`c${tipoAcordion}${i}`) }}>
                             <TipsAndUpdatesIcon />
                         </Button>
                     </Tooltip> : ""
@@ -155,7 +156,7 @@ class Test extends React.Component {
                 <AccordionDetails>
                     {
                         pregunta.opciones.map((opcion, e) => {
-                            return this.pintarOpciones(opcion,i,tipoAcordion,e)
+                            return this.pintarOpciones(opcion, i, tipoAcordion, e)
                         })
                     }
                 </AccordionDetails>
@@ -163,7 +164,7 @@ class Test extends React.Component {
         )
     }
 
-    pintarOpciones(opcion, i,tipoAcordion,e) {
+    pintarOpciones(opcion, i, tipoAcordion, e) {
         return (
             opcion.opcionCorrecta === 1
                 ? <Alert key={e}>{opcion.opcion} <CheckCircleOutlineIcon id={`c${tipoAcordion}${i}`} style={{ display: "none" }} /></Alert>
@@ -174,7 +175,7 @@ class Test extends React.Component {
     pintarSupuesto(supuesto, i) {
         return (
             <Accordion key={`supuesto${i}`} defaultExpanded style={{ background: "rgb(229, 246, 253)", borderRadius: "10px", color: "rgb(1, 67, 97)", fontWeight: "400", marginBottom: "10px" }}>
-                <AccordionDetails style={{padding: "50px"}}>
+                <AccordionDetails style={{ padding: "50px" }}>
                     <Paper elevation={3} style={{ padding: "10px", display: this.state.ocultarSupuesto ? "none" : "block" }} >
                         {supuesto.split("\\n").map(p => {
                             return <p>{p}</p>
@@ -234,8 +235,10 @@ class Test extends React.Component {
                                                 }
                                             </AccordionDetails>
                                         </Accordion>
-                                    </React.Fragment>)
-
+                                    </React.Fragment>
+                                )
+                            }else{
+                                return"";
                             }
                         })}
 
