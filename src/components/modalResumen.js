@@ -132,7 +132,6 @@ class ModalResumen extends React.Component {
                                                 })}
                                             </Tab>)
                                     })}
-                                    {this.mostrarTodos(resumen)}
                                     {this.mostrarCorrectas(resumen)}
                                     {this.mostrarIncorrectas(resumen)}
 
