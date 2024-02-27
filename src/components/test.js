@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Card, Alert, Button } from "react-bootstrap";
-import { CircularProgress, Box, Link, Breadcrumbs, Typography, Tooltip, Accordion, AccordionSummary, AccordionDetails, Paper } from '@mui/material';
+import { CircularProgress, Box, Link, Breadcrumbs, Typography, Tooltip, Accordion, AccordionSummary, AccordionDetails} from '@mui/material';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import NoHayDatos from "./nohaydatos";
@@ -13,7 +13,7 @@ class Test extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            colores:["rgb(237, 247, 237)","rgb(229, 246, 253)","rgb(255, 244, 229)","rgb(253, 237, 237)"],
+            colores: ["rgb(237, 247, 237)", "rgb(229, 246, 253)", "rgb(255, 244, 229)", "rgb(253, 237, 237)"],
             test: null,
             loading: true,
             mapaTest: []
@@ -101,7 +101,6 @@ class Test extends React.Component {
         }, 1000)
     }
 
-
     formatPreguntas(mPreguntas, mOpciones) {
         var auxPreguntas = [];
         mPreguntas.map(pregunta => {
@@ -130,8 +129,8 @@ class Test extends React.Component {
         });
         return aux.sort((a, b) => a.orden - b.orden)
     }
+
     mostrarRespuesta(a) {
-        console.log(a);
         let al = document.getElementById(a)
         if (al.style.display === "none") {
             al.style.display = "inline";
@@ -140,9 +139,7 @@ class Test extends React.Component {
         }
     }
 
-
     pintarPreguntas(pregunta, i, tipoAcordion) {
-        console.log(tipoAcordion);
         return (
             <Accordion defaultExpanded key={i} id={i} style={{ borderRadius: "10px", color: "rgb(1, 67, 97)", fontWeight: "400", marginBottom: "5px" }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2-content" id="panel2-header" > {pregunta.nombre}</AccordionSummary>
@@ -175,15 +172,15 @@ class Test extends React.Component {
 
     pintarSupuesto(supuesto, i) {
         return (
-            <Accordion key={`supuesto${i}`} defaultExpanded style={{ background: "rgb(229, 246, 253)", color: "rgb(1, 67, 97)", fontWeight: "400"}}>
-                    <Paper elevation={3} style={{ padding: "30px", display: this.state.ocultarSupuesto ? "none" : "block" }} >
-                        {supuesto.split("\\n").map(p => {
-                            return <p>{p}</p>
-                        })}
-                    </Paper>
+            <Accordion key={`S${i}`} defaultExpanded style={{ color: "rgb(1, 67, 97)", fontWeight: "400", padding: "10px"}}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header" > </AccordionSummary>
+                {supuesto.split("\\n").map((p, j) => {
+                    return <p key={j}>{p}</p>
+                })}
             </Accordion>
         )
     }
+
     render() {
         return (
 
@@ -193,7 +190,7 @@ class Test extends React.Component {
                 </Box>
                 :
                 this.state.mapaTest === undefined || this.state.mapaTest.length <= 0 ?
-                    <React.Fragment>
+                    <React.Fragment key={"nHayDatos"} eventKey={"noHayDatos"}>
                         <NoHayDatos message={"No hay bloques en este momento"} />
                     </React.Fragment>
                     : <Box sx={{ width: '90%' }} style={{ margin: "0px auto", marginTop: "30px", marginBottom: "50px" }}>
@@ -221,26 +218,22 @@ class Test extends React.Component {
                         {this.state.mapaTest.map((test, i) => {
                             if (test.preguntas.length > 0) {
                                 return (
-                                    <React.Fragment>
-
-                                        <Accordion TransitionProps={{ timeout: 1 }} key={i} id={i} defaultExpanded  style={{ color: "#666666",background: this.state.colores[ Math.floor(Math.random() * this.state.colores.length)], fontWeight: "700"}} >
-                                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header" > {test.nombre_test}</AccordionSummary>
-                                            <AccordionDetails>
-                                                {test.supuesto !== null ? this.pintarSupuesto(test.supuesto) : ""}
-                                                {
-                                                    test.preguntas.map((pregunta, e) => {
-                                                        return this.pintarPreguntas(pregunta, e, i)
-                                                    })
-                                                }
-                                            </AccordionDetails>
-                                        </Accordion>
-                                    </React.Fragment>
+                                    <Accordion TransitionProps={{ timeout: 1 }} key={i} id={i} defaultExpanded style={{ color: "#666666", background: this.state.colores[Math.floor(Math.random() * this.state.colores.length)], fontWeight: "700" }} >
+                                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header" > {test.nombre_test}</AccordionSummary>
+                                        <AccordionDetails>
+                                            {test.supuesto !== null ? this.pintarSupuesto(test.supuesto) : ""}
+                                            {
+                                                test.preguntas.map((pregunta, e) => {
+                                                    return this.pintarPreguntas(pregunta, e, i)
+                                                })
+                                            }
+                                        </AccordionDetails>
+                                    </Accordion>
                                 )
-                            }else{
-                                return"";
+                            } else {
+                                return "";
                             }
                         })}
-
                     </Box>
         );
     }

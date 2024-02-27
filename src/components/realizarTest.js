@@ -1,284 +1,261 @@
 import React from "react";
 
-import { Card, Alert, Button } from "react-bootstrap";
-import { CircularProgress, Box, Link, Breadcrumbs, Typography, Tooltip, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Card, Alert } from "react-bootstrap";
+import { CircularProgress, Box, Link, Breadcrumbs, Typography, Accordion, AccordionSummary, AccordionDetails, Paper } from '@mui/material';
 import NoHayDatos from "./nohaydatos";
 import { Link as RouterLink } from 'react-router-dom';
-import Badge from 'react-bootstrap/Badge';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import Modal from 'react-bootstrap/Modal';
-import Row from 'react-bootstrap/Row';
-import CloseIcon from '@mui/icons-material/Close';
-import CheckIcon from '@mui/icons-material/Check';
-import ProgressBar from 'react-bootstrap/ProgressBar';
-import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Swal from 'sweetalert2'
+import ModalResumen from "./modalResumen";
+import Timer from "./timer";
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
-class RealizarTest extends React.Component {
+class Test extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            colores: ["rgb(237, 247, 237)", "rgb(229, 246, 253)", "rgb(255, 244, 229)", "rgb(253, 237, 237)"],
             test: null,
-            preguntas: [],
-            opciones: [],
-            t: [],
             loading: true,
-            respuestasSeleccionadas: [],
-            show: false,
-            aciertos: [],
-            fallos: [],
-            porcentaje: 0,
-            mostrarIcono: false
+            mapaTest: [],
+            opcionesSeleccionadas: [],
+            contCorrectas: 0,
+            contIncorrectas: 0,
+            totalPreguntas: 0,
+            porcentaje: 0
         }
-        this.respuestaSeleccionada = this.respuestaSeleccionada.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleShow = this.handleShow.bind(this);
-        this.handleScroll = this.handleScroll.bind(this);
     }
-    scrollToElement() {
-        window.scroll({
-            top: document.body.scrollHeight,
-            behavior: "smooth",
-        });
-    };
-
-    handleScroll() {
-        var tamanoTotalYScrool = document.body.scrollHeight - (20 * document.body.scrollHeight) / 100;
-        if (window.pageYOffset >= tamanoTotalYScrool) {
-            this.setState({
-                mostrarIcono: false
-            })
-        } else {
-            this.setState({
-                mostrarIcono: true
-            })
-        }
-    };
 
     componentWillMount() {
-        window.addEventListener('scroll', this.handleScroll)
 
         const id_test = window.location.pathname.split("/")[3];
         setTimeout(() => {
-            fetch(`${process.env.REACT_APP_API}opciones/${id_test}`)
-                .then(data => {
-                    return data.json();
-                }).then(data => {
-                    this.setState({
-                        opciones: data.result
-                    });
-                })
-
-        },)
-
-        setTimeout(() => {
-            fetch(`${process.env.REACT_APP_API}preguntas/${id_test}`)
-                .then(data => {
-                    return data.json();
-                }).then(data => {
-                    this.setState({
-                        preguntas: data.result,
-
-                    });
-                    var aux = [];
-                    if (data.result !== undefined) {
-                        for (var i = 0; i <= data.result.length; i++) {
-                            aux.push(i)
-                        }
-                    }
-                    this.setState({
-                        t: aux
-                    });
-                })
-        });
-
-        setTimeout(() => {
-            fetch(`${process.env.REACT_APP_API}preguntas/${id_test}`)
-                .then(data => {
-                    return data.json();
-                }).then(data => {
-                    this.setState({
-                        preguntas: data.result,
-
-                    });
-                    var aux = [];
-                    if (data.result !== undefined) {
-                        for (var i = 0; i <= data.result.length; i++) {
-                            aux.push(i)
-                        }
-                    }
-                    this.setState({
-                        t: aux
-                    });
-                })
-        });
-
-        setTimeout(() => {
+            var l = [];
+            var mPreguntas = [];
+            var mOpciones = [];
             fetch(`${process.env.REACT_APP_API}test/${id_test}`)
                 .then(data => {
                     return data.json();
                 }).then(data => {
-                    this.setState({
-                        test: data.result[0],
-                    });
+                    var test = data.result[0];
+                    fetch(`${process.env.REACT_APP_API}preguntas/${id_test}`)
+                        .then(data => {
+                            return data.json();
+                        }).then(data => {
+                            mPreguntas = data.result;
+                            fetch(`${process.env.REACT_APP_API}opciones/${id_test}`)
+                                .then(data => {
+                                    return data.json();
+                                }).then(data => {
+                                    mOpciones = data.result;
+                                    l.push({
+                                        id_test: +id_test,
+                                        preguntas: this.formatPreguntas(mPreguntas, mOpciones),
+                                        nombre_test: test.nombre,
+                                        tieneSupuesto: test.tieneSupuesto,
+                                        supuesto: test.supuesto,
+                                        orden: 0
+                                    })
+                                    this.setState({
+                                        test: test,
+                                    });
+                                })
+                        })
                     if (data.result[0].tieneSubtemas) {
                         fetch(`${process.env.REACT_APP_API}compuestos/${data.result[0].id_tema}`)
                             .then(data => {
                                 return data.json();
                             }).then(data => {
                                 var totalSubtemas = data.result;
-                                totalSubtemas.map((compuesto, i) => {
 
+                                totalSubtemas.map((compuesto, i) => {
+                                    var mPreguntas = [];
+                                    var mOpciones = [];
                                     fetch(`${process.env.REACT_APP_API}opciones/${compuesto.id_hijo}`)
                                         .then(data => {
                                             return data.json();
                                         }).then(data => {
-
-                                            this.setState({
-                                                opciones: this.state.opciones.concat(data.result)
-                                            });
+                                            mOpciones = data.result;
 
                                             fetch(`${process.env.REACT_APP_API}preguntas/${compuesto.id_hijo}`)
                                                 .then(data => {
                                                     return data.json();
                                                 }).then(data => {
+                                                    mPreguntas = data.result;
+                                                    mPreguntas = data.result;
+                                                    this.crearMapaTest(compuesto, mPreguntas, mOpciones, l);
                                                     this.setState({
-                                                        preguntas: this.state.preguntas.concat(data.result)
+                                                        loading: false,
                                                     });
-                                                    var aux = [];
-                                                    if (data.result !== undefined) {
-                                                        for (var i = 0; i <= data.result.length; i++) {
-                                                            aux.push(i)
-                                                        }
-                                                    }
-                                                    this.setState({
-                                                        t: this.state.t.concat(aux),
-                                                        loading: false
-                                                    });
+
                                                 })
                                         })
-                                        return"";
+                                    return "";
+                                })
+                                this.setState({
+                                    mapaTest: l,
                                 })
                             })
                     } else {
                         this.setState({
-                            loading: false
+                            mapaTest: l,
+                            loading: false,
                         });
                     }
                 })
         }, 1000)
     }
 
-    respuestaSeleccionada(pregunta, opcionSeleccionada) {
-        if (!pregunta.anulada) {
-            var aux = this.state.respuestasSeleccionadas;
-            var a = this.state.aciertos;
-            var f = this.state.fallos;
-            var opcionesPregunta = this.state.opciones.filter(o => o.id_pregunta === pregunta.id);
-            var respuestaCorrecta = opcionesPregunta.filter(op => op.opcionCorrecta === 1)[0];
-            var respuestaAborrar = aux.filter(rp => rp.preguntaId === pregunta.id);
-            if (respuestaAborrar.length > 0) {
-                if (respuestaCorrecta.id_opcion === respuestaAborrar[0].opcionSeleccionadaId) {
-                    a.pop();
-                } else {
-                    f.pop();
-                }
-                let al = document.getElementById(respuestaAborrar[0].opcionSeleccionadaId);
-                al.classList.remove("alert-secondary");
-                al.classList.add("alert-primary");
+    formatPreguntas(mPreguntas, mOpciones) {
+        var auxPreguntas = [];
+        var cont = this.state.totalPreguntas;
+
+        mPreguntas.map(pregunta => {
+            if (pregunta.anulada === 0) {
+                cont++;
             }
-            aux = aux.filter(rp => rp.preguntaId !== pregunta.id);
-            aux.push({
-                "preguntaId": pregunta.id,
-                "opcionSeleccionada": opcionSeleccionada.opcion,
-                "opcionSeleccionadaId": opcionSeleccionada.id_opcion,
-                "opcionCorrecta": respuestaCorrecta.opcion,
-                "opcionCorrectaId": respuestaCorrecta.id_opcion,
-                "pregunta": pregunta.nombre
-            });
+            return auxPreguntas.push({
+                anho: pregunta.anho,
+                annho: pregunta.annho,
+                anulada: pregunta.anulada,
+                esReserva: pregunta.esReserva,
+                id: pregunta.id,
+                id_test: pregunta.id_test,
+                nombre: pregunta.nombre,
+                opciones: mOpciones.filter(opcion => opcion.id_pregunta === pregunta.id)
 
-            var porcentajeActual = (aux.length * 100) / this.state.preguntas.filter(p => !p.anulada).length;
-
-            this.setState({
-                respuestasSeleccionadas: aux,
-                porcentaje: Math.round(porcentajeActual)
             })
+        })
+        this.setState({
+            totalPreguntas: cont
+        })
+        return auxPreguntas;
+    }
 
-            let al = document.getElementById(opcionSeleccionada.id_opcion);
-            al.classList.remove("alert-primary");
-            al.classList.add("alert-secondary");
-            if (respuestaCorrecta.id_opcion === opcionSeleccionada.id_opcion) {
-                a.push(1);
-                this.setState({ aciertos: a })
+    crearMapaTest(compuesto, mPreguntas, mOpciones, aux) {
+        aux.push({
+            id_test: compuesto.id_hijo,
+            preguntas: this.formatPreguntas(mPreguntas, mOpciones),
+            nombre_test: compuesto.Nombre,
+            supuesto: compuesto.supuesto,
+            orden: compuesto.orden
+        });
+        return aux.sort((a, b) => a.orden - b.orden)
+    }
+
+    respuestaSeleccionada(numeroPregunta, numeroTest, numeroOpcion) {
+        var id = `A${numeroTest}P${numeroPregunta}O${numeroOpcion}`;
+        let al = document.getElementById(id);
+        var p = al.parentNode;
+        var incorrectas = this.state.contIncorrectas;
+        var correctas = this.state.contCorrectas;
+
+        var opcionesSeleccionadas = this.state.opcionesSeleccionadas;
+        var test = this.state.mapaTest[numeroTest];
+        var pregunta = test.preguntas[numeroPregunta];
+        var opcionSeleccionada = pregunta.opciones[numeroOpcion];
+
+        var opcionCorrecta = pregunta.opciones.filter(op => op.opcionCorrecta === 1)[0];
+        var buscarTest = opcionesSeleccionadas.filter(t => t.test.id_test === test.id_test);
+
+        if (buscarTest.length > 0) {
+            var buscarPregunta = buscarTest[0].preguntas.filter(p => p.pregunta.id === pregunta.id);
+            if (buscarPregunta.length > 0) {
+                var opcionAntigua = buscarPregunta[0].opciones.opcionSeleccionada;
+
+                if (opcionAntigua.id_opcion === opcionCorrecta.id_opcion) {
+                    correctas--;
+                } else {
+                    incorrectas--;
+                }
+                if (opcionSeleccionada.id_opcion === opcionCorrecta.id_opcion) {
+                    correctas++;
+                } else {
+                    incorrectas++;
+                }
+                buscarPregunta[0].opciones.opcionSeleccionada = opcionSeleccionada;
+                for (var i = 0; i < p.children.length; ++i) {
+                    if (p.children[i].classList.contains('alert-secondary')) {
+                        p.children[i].classList.remove("alert-secondary");
+                        p.children[i].classList.add("alert-primary");
+                    }
+                }
             } else {
-                f.push(1);
-                this.setState({ fallos: f })
-
+                buscarTest[0].preguntas.push({
+                    pregunta: pregunta,
+                    opciones: { opcionSeleccionada: opcionSeleccionada, opcionCorrecta: opcionCorrecta }
+                })
+                if (opcionSeleccionada.id_opcion === opcionCorrecta.id_opcion) {
+                    correctas++;
+                } else {
+                    incorrectas++;
+                }
             }
         } else {
-            Swal.fire({
-                title: "Lo sentimos !",
-                text: "Esta pregunta fue eliminada del test y no cuenta a la hora de realizar el mismo",
-                icon: "error"
-            });
+            opcionesSeleccionadas.push({
+                test: test, preguntas: [{ pregunta: pregunta, opciones: { opcionSeleccionada: opcionSeleccionada, opcionCorrecta: opcionCorrecta } }]
+            })
+            if (opcionSeleccionada.id_opcion === opcionCorrecta.id_opcion) {
+                correctas++;
+            } else {
+                incorrectas++;
+            }
         }
+        al.classList.remove("alert-primary");
+        al.classList.add("alert-secondary");
+        var porcentajeActual = ((correctas+incorrectas) * 100) / this.state.totalPreguntas;
 
+        this.setState({
+            porcentaje: Math.round(porcentajeActual),
+            opcionesSeleccionadas: opcionesSeleccionadas,
+            contCorrectas: correctas,
+            contIncorrectas: incorrectas
+        })
     }
-
-    handleClose() {
-        this.setState({ show: false })
-    }
-
-    handleShow() {
-        this.setState({ show: true })
-    }
-
 
     pintarPreguntas(pregunta, i, tipoAcordion) {
         return (
-            <Accordion key={i} id={i} defaultExpanded>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header" > {`Pregunta ${i + 1}`}</AccordionSummary>
+            <Accordion defaultExpanded key={i} id={i} style={{ borderRadius: "10px", color: "rgb(1, 67, 97)", fontWeight: "400", marginBottom: "5px" }}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2-content" id="panel2-header" > {pregunta.nombre}</AccordionSummary>
                 <AccordionDetails>
-                    <Card className="p-5 m-2" key={i}>
-                        <Card className="mb-2">
-                            <Card.Header><strong className="mr-5">{`Año ${pregunta.annho}`}</strong>
-                            </Card.Header>
-                            <Card.Body>{pregunta.nombre}
-                            </Card.Body>
-                        </Card>
-                        {
-                            this.state.opciones.filter(o => o.id_pregunta === pregunta.id).map((opcion, e) => (
-                                <React.Fragment key={e}>
-                                    <Alert style={{ cursor: "pointer" }}
-                                        onClick={() => this.respuestaSeleccionada(pregunta, opcion)} id={opcion.id_opcion} key={e}>{opcion.opcion}
-                                    </Alert>
-                                </React.Fragment>
-
-                            ))}
-                    </Card>
+                    {
+                        pregunta.opciones.map((opcion, e) => {
+                            return (
+                                pregunta.anulada === 0 ?
+                                    <Alert style={{ cursor: "pointer" }} onClick={() => this.respuestaSeleccionada(i, tipoAcordion, e)} key={e} id={`A${tipoAcordion}P${i}O${e}`}>{opcion.opcion}</Alert>
+                                    : <Alert key={e} id={`P${i}O${e}`}>{opcion.opcion}</Alert>
+                            )
+                        })
+                    }
                 </AccordionDetails>
             </Accordion>
         )
     }
 
+    pintarSupuesto(supuesto, i) {
+        return (
+            <Accordion key={`supuesto${i}`} defaultExpanded style={{ background: "rgb(229, 246, 253)", color: "rgb(1, 67, 97)", fontWeight: "400" }}>
+                <Paper key={`sp${i}`} elevation={3} style={{ padding: "30px", display: this.state.ocultarSupuesto ? "none" : "block" }} >
+                    {supuesto.split("\\n").map((p, j) => {
+                        return <p key={j}>{p}</p>
+                    })}
+                </Paper>
+            </Accordion>
+        )
+    }
     render() {
         return (
+
             this.state.loading ?
                 <Box sx={{ width: '90%', alignItems: "center", textAlign: "center" }}>
                     <CircularProgress />
                 </Box>
                 :
-                this.state.preguntas === undefined || this.state.preguntas.length <= 0 ?
-                    <React.Fragment>
+                this.state.mapaTest === undefined || this.state.mapaTest.length <= 0 ?
+                    <React.Fragment key={"nHayDatos"}>
                         <NoHayDatos message={"No hay bloques en este momento"} />
                     </React.Fragment>
-                    : <Box sx={{ width: '90%' }} style={{ margin: "0px auto", marginTop: "30px", marginBottom: "10px" }}>
-
+                    : <Box sx={{ width: '90%' }} style={{ margin: "0px auto", marginTop: "30px", marginBottom: "50px" }}>
                         <Breadcrumbs aria-label="breadcrumb">
                             <Link underline="hover" color="inherit" to="/" component={RouterLink} style={{ textDecoration: "none" }}>
                                 Bloques
@@ -288,19 +265,11 @@ class RealizarTest extends React.Component {
                             </Link>
                             <Typography color="text.primary">{this.state.test.nombre_corto_tema}</Typography>
                         </Breadcrumbs>
+
                         <Card className="mb-2">
-
-                            <div style={{ position: 'fixed', bottom: '50px', zIndex: 1, right: 0, width: "100%", alignItems: "center" }}>
-
-                                <Tooltip title="finalizar">
-                                    <Button style={{ cursor: "pointer", display: this.state.mostrarIcono && this.state.porcentaje >= 100 ? "block" : "none", margin: "0px auto", marginBottom: "10px" }} >
-                                        <ArrowCircleDownIcon onClick={this.scrollToElement} />
-                                    </Button>
-                                </Tooltip>
-                                <ProgressBar label={`${this.state.porcentaje}%`} animated now={this.state.porcentaje} style={{ width: "50%", margin: "0px auto" }} />
-                            </div>
-
-                            <Card.Img variant="top" height="100px" src="https://i0.wp.com/latorruana.com/wp-content/uploads/2022/09/estuche-no-puedo-tengo-opos.jpg?fit=1920%2C1920&ssl=1" style={{ objectFit: "cover" }} />
+                            <Card.Img variant="top" height="100px"
+                                src="https://i0.wp.com/latorruana.com/wp-content/uploads/2022/09/estuche-no-puedo-tengo-opos.jpg?fit=1920%2C1920&ssl=1"
+                                style={{ objectFit: "cover" }} />
                             <Card.Body>
                                 <Card.Title>{this.state.test.nombre_bloque}</Card.Title>
                                 <Card.Text>
@@ -308,193 +277,38 @@ class RealizarTest extends React.Component {
                                 </Card.Text>
                             </Card.Body>
                         </Card>
+                        <div style={{ position: 'fixed', bottom: '50px', zIndex: 1, right: 0, width: "100%", alignItems: "center" }}>
+                            <ProgressBar label={`${this.state.porcentaje}%`} animated now={this.state.porcentaje} style={{ width: "50%", margin: "0px auto" }} />
+                        </div>
+                        <Timer />
 
-                        {
-                            this.state.preguntas.filter(p => p.esReserva === 0 && p.anulada === 0).length > 0
-                                ? this.state.preguntas.length > this.state.preguntas.filter(p => p.esReserva === 0 && p.anulada === 0).length
-                                    ?
-                                    <Accordion TransitionProps={{ timeout: 1 }} style={{ marginBottom: "10px", background: "rgb(237, 247, 237)", borderRadius: "10px", color: "rgb(46, 125, 50)", fontWeight: "400" }}>
-                                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="pReservas">
-                                            <Typography color="success" style={{ margin: "0px auto" }}>Preguntas</Typography>
-                                        </AccordionSummary>
+                        {this.state.mapaTest.map((test, i) => {
+                            if (test.preguntas.length > 0) {
+                                return (
+                                    <Accordion TransitionProps={{ timeout: 1 }} key={i} id={i} defaultExpanded style={{ color: "#666666", background: this.state.colores[Math.floor(Math.random() * this.state.colores.length)], fontWeight: "700" }} >
+                                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header" > {test.nombre_test}</AccordionSummary>
                                         <AccordionDetails>
-                                            {this.state.preguntas.filter(p => p.esReserva === 0 && p.anulada === 0).map((pregunta, i) => (
-                                                this.pintarPreguntas(pregunta, i, "P")
-                                            ))}
-                                        </AccordionDetails>
-                                    </Accordion>
-                                    :
-
-                                    this.state.preguntas.filter(p => p.esReserva === 0 && p.anulada === 0).map((pregunta, i) => (
-                                        this.pintarPreguntas(pregunta, i, "P")
-                                    ))
-
-                                : ""
-
-                        }
-
-                        {
-                            this.state.preguntas.filter(p => p.esReserva).length > 0
-                                ? this.state.preguntas.length > this.state.preguntas.filter(p => p.esReserva).length ?
-                                    <Accordion style={{ marginBottom: "10px", background: "rgb(255, 244, 229)", borderRadius: "10px", color: "rgb(102, 60, 0)", fontWeight: "400" }}>
-                                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="pReservas">
-                                            <Typography color="success" style={{ margin: "0px auto" }}>Preguntas reservadas</Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
+                                            {test.supuesto !== null ? this.pintarSupuesto(test.supuesto) : ""}
                                             {
-                                                this.state.preguntas.filter(p => p.esReserva).map((pregunta, i) => (
-                                                    this.pintarPreguntas(pregunta, i, "PV")
-                                                ))
-
+                                                test.preguntas.map((pregunta, e) => {
+                                                    return this.pintarPreguntas(pregunta, e, i)
+                                                })
                                             }
                                         </AccordionDetails>
                                     </Accordion>
-                                    :
-                                    this.state.preguntas.filter(p => p.esReserva).map((pregunta, i) => (
-                                        this.pintarPreguntas(pregunta, i, "PV")
-                                    ))
-
-                                : ""
-                        }
-
-
-
-                        {
-                            this.state.preguntas.filter(p => p.anulada).length > 0
-                                ? this.state.preguntas.length > this.state.preguntas.filter(p => p.anulada).length ?
-                                    <Accordion style={{ marginBottom: "10px", background: "rgb(253, 237, 237)", borderRadius: "10px", color: "rgb(95, 33, 32)", fontWeight: "400" }}>
-                                        <AccordionSummary everity="warning" expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="pReservas">
-                                            <Typography s color="success" style={{ margin: "0px auto" }}>Preguntas eliminadas</Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-                                            {this.state.preguntas.filter(p => p.anulada).map((pregunta, i) => (
-                                                this.pintarPreguntas(pregunta, i, "PA")
-                                            ))}
-                                        </AccordionDetails>
-                                    </Accordion>
-                                    :
-                                    this.state.preguntas.filter(p => p.anulada).map((pregunta, i) => (
-                                        this.pintarPreguntas(pregunta, i, "PA")
-                                    ))
-                                : ""
-                        }
-
-                        <Button ref={this.refFinalizar} className="mt-5" style={{ width: "100%" }} onClick={this.handleShow}>Finalizar</Button>
-
-                        <Modal show={this.state.show} onHide={this.handleClose}
-                            size="xl"
-                            aria-labelledby="contained-modal-title-vcenter"
-                            centered>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Resumen</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <Container>
-                                    <Row>
-                                        <Col xs={12} md={6}>
-                                            <h5 style={{ textAlign: "right" }}>
-                                                Número de aciertos
-                                                <Badge style={{ marginLeft: "10px" }} bg="success"> {this.state.aciertos.length} </Badge>
-                                            </h5>
-                                        </Col>
-                                        <Col xs={12} md={6}>
-                                            <h5 style={{ textAlign: "right" }}>
-                                                Número de fallos
-                                                <Badge style={{ marginLeft: "10px" }} bg="danger"> {this.state.fallos.length} </Badge>
-                                            </h5>
-                                        </Col>
-                                    </Row>
-
-                                    <Row>
-                                        <Tabs defaultActiveKey="Todos" id="uncontrolled-tab-example" className="mb-3">
-                                            <Tab eventKey="Todos" title="Todos">
-
-                                                {this.state.respuestasSeleccionadas.map((rp, e) => (
-                                                    <Accordion key={e} id={e} defaultExpanded>
-                                                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header" >
-                                                            <p style={{ backgroundColor: "darkgrey !important" }}>{rp.pregunta}
-                                                                {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
-                                                                    ? <CloseIcon style={{ marginLeft: "10px", marginBottom: "5px" }} sx={{ color: "red" }}>add_circle</CloseIcon>
-                                                                    : <CheckIcon style={{ marginLeft: "10px", marginBottom: "5px" }} color="success">add_circle</CheckIcon>}
-                                                            </p>
-                                                        </AccordionSummary>
-
-                                                        <AccordionDetails>
-                                                            <div className="md-12 xs-12">
-                                                                <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#198754", color: "white", fontWeight: 600 }} >{rp.opcionCorrecta}</div>
-                                                                {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
-                                                                    ? <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#dc3545", color: "white", fontWeight: 600 }} >{rp.opcionSeleccionada}</div>
-                                                                    : ""}
-                                                            </div>
-                                                        </AccordionDetails>
-                                                    </Accordion>
-                                                ))}
-                                            </Tab>
-
-                                            <Tab eventKey="Aciertos" title="Aciertos">
-
-                                                {this.state.respuestasSeleccionadas.map((rp, e) => (
-                                                    rp.opcionCorrectaId === rp.opcionSeleccionadaId ?
-
-                                                        <Accordion key={e} id={e} defaultExpanded>
-                                                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header" >
-                                                                <p style={{ backgroundColor: "darkgrey !important" }}>{rp.pregunta}
-                                                                    <CheckIcon style={{ marginLeft: "10px", marginBottom: "5px" }} color="success">add_circle</CheckIcon>
-                                                                </p>
-                                                            </AccordionSummary>
-
-                                                            <AccordionDetails>
-                                                                <div className="md-12 xs-12">
-                                                                    <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#198754", color: "white", fontWeight: 600 }} >{rp.opcionCorrecta}</div>
-                                                                </div>
-                                                            </AccordionDetails>
-                                                        </Accordion>
-                                                        : ""
-                                                ))}
-                                            </Tab>
-
-                                            <Tab eventKey="Fallos" title="Fallos">
-
-                                                {this.state.respuestasSeleccionadas.map((rp, e) => (
-                                                    rp.opcionCorrectaId !== rp.opcionSeleccionadaId ?
-
-                                                        <Accordion key={e} id={e} defaultExpanded>
-                                                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header" >
-                                                                <p style={{ backgroundColor: "darkgrey !important" }}>{rp.pregunta}
-                                                                    <CloseIcon style={{ marginLeft: "10px", marginBottom: "5px" }} sx={{ color: "red" }}>add_circle</CloseIcon>
-                                                                </p>
-                                                            </AccordionSummary>
-
-                                                            <AccordionDetails>
-                                                                <div className="md-12 xs-12">
-                                                                    <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#198754", color: "white", fontWeight: 600 }} >{rp.opcionCorrecta}</div>
-                                                                    {rp.opcionCorrectaId !== rp.opcionSeleccionadaId
-                                                                        ? <div style={{ border: "1px solid", borderRadius: "5px", padding: "25px", background: "#dc3545", color: "white", fontWeight: 600 }} >{rp.opcionSeleccionada}</div>
-                                                                        : ""}
-                                                                </div>
-
-                                                            </AccordionDetails>
-                                                        </Accordion>
-                                                        : ""
-                                                ))}
-                                            </Tab>
-                                        </Tabs>
-
-                                    </Row>
-                                </Container>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={this.handleClose}>
-                                    Close
-                                </Button>
-                                <Button variant="warning" onClick={() => { window.location.reload(true); }}>
-                                    Volver a empezar el test
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
-                    </Box >
+                                )
+                            } else {
+                                return "";
+                            }
+                        })}
+                        <ModalResumen
+                            resumen={this.state.opcionesSeleccionadas}
+                            correctas={this.state.contCorrectas}
+                            incorrectas={this.state.contIncorrectas}>
+                        </ModalResumen>
+                    </Box>
         );
     }
 }
 
-export default RealizarTest;
+export default Test;
