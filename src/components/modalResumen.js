@@ -55,28 +55,6 @@ class ModalResumen extends React.Component {
         </Tab>
     }
 
-    mostrarTodos(resumen) {
-        {
-            return resumen.map((test, i) => {
-                return <Tab eventKey={i} key={i} title={test.test.nombre_test}>
-                    {test.preguntas.map((pregunta, e) => {
-                        return <Accordion defaultExpanded key={e} style={{ borderRadius: "10px", color: "rgb(1, 67, 97)", fontWeight: "400", marginBottom: "5px" }}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2-content" id="panel2-header" > {pregunta.pregunta.nombre}</AccordionSummary>
-                            <AccordionDetails>
-                                {pregunta.opciones.opcionSeleccionada.id_opcion === pregunta.opciones.opcionCorrecta.id_opcion ?
-                                    <Alert style={{ background: "rgb(237, 247, 237)", borderColor: "rgb(237, 247, 237)" }}>{pregunta.opciones.opcionCorrecta.opcion}<CheckCircleOutlineIcon /></Alert>
-                                    :
-                                    <React.Fragment key={e}>
-                                        <Alert style={{ background: "rgb(237, 247, 237)", borderColor: "rgb(237, 247, 237)" }}>{pregunta.opciones.opcionCorrecta.opcion}<CheckCircleOutlineIcon /></Alert>
-                                        <Alert style={{ background: "rgb(253, 237, 237)", borderColor: "rgb(253, 237, 237)" }}>{pregunta.opciones.opcionSeleccionada.opcion}</Alert>
-                                    </React.Fragment>}
-                            </AccordionDetails>
-                        </Accordion>
-                    })}
-                </Tab>
-            })
-        }
-    }
     mostrarIncorrectas(resumen) {
         return <Tab eventKey={resumen.length + 2} key={resumen.length + 2} title="Incorrectas">
             {resumen.map((test, i) => {
@@ -135,6 +113,25 @@ class ModalResumen extends React.Component {
                             <Row>
                                 <Tabs defaultActiveKey={0} id="uncontrolled-tab-example" className="mb-3">
 
+                                    {resumen.map((test, i) => {
+                                        return (
+                                            <Tab eventKey={i} key={i} title={test.test.nombre_test}>
+                                                {test.preguntas.map((pregunta, e) => {
+                                                    return <Accordion defaultExpanded key={e} style={{ borderRadius: "10px", color: "rgb(1, 67, 97)", fontWeight: "400", marginBottom: "5px" }}>
+                                                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2-content" id="panel2-header" > {pregunta.pregunta.nombre}</AccordionSummary>
+                                                        <AccordionDetails>
+                                                            {pregunta.opciones.opcionSeleccionada.id_opcion === pregunta.opciones.opcionCorrecta.id_opcion ?
+                                                                <Alert style={{ background: "rgb(237, 247, 237)", borderColor: "rgb(237, 247, 237)" }}>{pregunta.opciones.opcionCorrecta.opcion}<CheckCircleOutlineIcon /></Alert>
+                                                                :
+                                                                <React.Fragment key={e}>
+                                                                    <Alert style={{ background: "rgb(237, 247, 237)", borderColor: "rgb(237, 247, 237)" }}>{pregunta.opciones.opcionCorrecta.opcion}<CheckCircleOutlineIcon /></Alert>
+                                                                    <Alert style={{ background: "rgb(253, 237, 237)", borderColor: "rgb(253, 237, 237)" }}>{pregunta.opciones.opcionSeleccionada.opcion}</Alert>
+                                                                </React.Fragment>}
+                                                        </AccordionDetails>
+                                                    </Accordion>
+                                                })}
+                                            </Tab>)
+                                    })}
                                     {this.mostrarTodos(resumen)}
                                     {this.mostrarCorrectas(resumen)}
                                     {this.mostrarIncorrectas(resumen)}
