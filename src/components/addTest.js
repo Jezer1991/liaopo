@@ -29,6 +29,8 @@ class AddTest extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeTipoTest = this.handleChangeTipoTest.bind(this);
         this.handleChangeTema = this.handleChangeTema.bind(this);
+        this.cambiarVisibilidad = this.cambiarVisibilidad.bind(this);
+        this.enabledSubtemas = this.enabledSubtemas.bind(this);
     }
 
     componentWillMount() {
@@ -53,7 +55,7 @@ class AddTest extends React.Component {
                 })
 
             if (this.state.id_bloque === undefined) {
-                fetch(`${process.env.REACT_APP_API}tests`)
+                fetch(`${process.env.REACT_APP_API}allTests`)
                     .then(data => {
                         return data.json();
                     }).then(data => {
@@ -63,7 +65,7 @@ class AddTest extends React.Component {
                         });
                     })
             } else {
-                fetch(`${process.env.REACT_APP_API}tests/${this.state.id_bloque}`)
+                fetch(`${process.env.REACT_APP_API}allTests/${this.state.id_bloque}`)
                     .then(data => {
                         return data.json();
                     }).then(data => {
@@ -145,6 +147,46 @@ class AddTest extends React.Component {
     handleChangeTema(e) {
         this.setState({
             temaSeleccionado: e.target.value
+        });
+    }
+
+    cambiarVisibilidad(id, visible){
+        const request = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: id,
+                visible: visible===0? true: false,
+            })
+        }
+        
+        fetch(`${process.env.REACT_APP_API}visibility`, request)
+        .then(data => {
+            return data.json();
+        }).then(data => {
+            if(data.code === 201){
+                window.location.reload();
+            }
+        });
+    }
+
+    enabledSubtemas(id, enabled){
+        const request = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: id,
+                enabled: enabled===0? true: false,
+            })
+        }
+        
+        fetch(`${process.env.REACT_APP_API}enabled/subtemas`, request)
+        .then(data => {
+            return data.json();
+        }).then(data => {
+            if(data.code === 201){
+                window.location.reload();
+            }
         });
     }
 
@@ -247,6 +289,7 @@ class AddTest extends React.Component {
                                         <TableCell align="center">ID Bloque</TableCell>
                                         <TableCell align="center">Nombre del Bloque</TableCell>
                                         <TableCell align="center">Tiene subtemas</TableCell>
+                                        <TableCell align="center">Visible</TableCell>
                                         <TableCell align="center" colSpan={2}></TableCell>
                                     </TableRow>
                                 </TableHead>
@@ -268,8 +311,14 @@ class AddTest extends React.Component {
                                             <TableCell align="center">{test.nombre_bloque}</TableCell>
                                             <TableCell align="center">
                                                 <Checkbox
-                                                    disabled
-                                                    checked={test.tieneSubtemas}
+                                                    checked={test.tieneSubtemas === 0? false: true}
+                                                    onClick={(e)=>{this.enabledSubtemas(test.id_test, test.tieneSubtemas)}}
+                                                />
+                                            </TableCell>
+                                            <TableCell align="center">
+                                                <Checkbox
+                                                    checked={test.visible=== 0? false: true}
+                                                    onClick={(e)=>{this.cambiarVisibilidad(test.id_test, test.visible)}}
                                                 />
                                             </TableCell>
 

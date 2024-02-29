@@ -20,6 +20,7 @@ class AddPregunta extends React.Component {
             preguntas: []
         }
         this.handleChange = this.handleChange.bind(this);
+        this.updatePregunta = this.updatePregunta.bind(this);
     }
     componentWillMount() {
         setTimeout(() => {
@@ -93,6 +94,30 @@ class AddPregunta extends React.Component {
             anhoSeleccionado: e.target.value
         })
     }
+
+    updatePregunta(col, value, id) {
+        console.log(col, value, id);
+        const request = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                value: value,
+                id: id,
+                col: col
+            })
+        }
+
+        fetch(`${process.env.REACT_APP_API}update/pregunta`, request)
+            .then(data => {
+                return data.json();
+            }).then(data => {
+                console.log(data);
+                if (data.code === 201) {
+                    window.location.reload();
+                }
+            });
+    }
+
     render() {
 
         return (
@@ -117,7 +142,7 @@ class AddPregunta extends React.Component {
                             label="Pregunta"
                         />
                         <TextField
-                        className="mt-5"
+                            className="mt-5"
                             type="number"
                             required
                             id="orden"
@@ -177,6 +202,7 @@ class AddPregunta extends React.Component {
                                 <TableRow>
                                     <TableCell align="left">ID</TableCell>
                                     <TableCell align="left">Nombre</TableCell>
+                                    <TableCell align="left">Orden</TableCell>
                                     <TableCell align="left">Año</TableCell>
                                     <TableCell align="left" colSpan={2}></TableCell>
                                 </TableRow>
@@ -186,12 +212,19 @@ class AddPregunta extends React.Component {
                                     <TableRow
                                         key={pregunta.id}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
+                                    >{console.log(pregunta.orden)
+                                        }
                                         <TableCell align="left">{pregunta.id}</TableCell>
                                         <TableCell align="left">
                                             <Link to={`/add/opcion/${pregunta.id}`} color="success" underline="hover" component={RouterLink}>
                                                 {pregunta.nombre}
                                             </Link>
+                                        </TableCell>
+                                        <TableCell align="left" style={{ width: "100px" }}>
+                                            <div>
+                                                {pregunta.orden}
+                                                <input style={{ width: "30px", height: "30px" }} onChange={(e) => { this.updatePregunta("orden", e.target.value, pregunta.id) }}></input>
+                                            </div>
                                         </TableCell>
                                         <TableCell align="left">{pregunta.annho}</TableCell>
                                         <TableCell align="left">

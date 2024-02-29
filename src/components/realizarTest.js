@@ -68,29 +68,9 @@ class Test extends React.Component {
                             }).then(data => {
                                 var totalSubtemas = data.result;
 
-                                totalSubtemas.map((compuesto, i) => {
-                                    var mPreguntas = [];
-                                    var mOpciones = [];
-                                    fetch(`${process.env.REACT_APP_API}opciones/${compuesto.id_hijo}`)
-                                        .then(data => {
-                                            return data.json();
-                                        }).then(data => {
-                                            mOpciones = data.result;
+                                totalSubtemas.map((compuesto) => {
+                                    return this.extraerCompuesto(compuesto, l);
 
-                                            fetch(`${process.env.REACT_APP_API}preguntas/${compuesto.id_hijo}`)
-                                                .then(data => {
-                                                    return data.json();
-                                                }).then(data => {
-                                                    mPreguntas = data.result;
-                                                    mPreguntas = data.result;
-                                                    this.crearMapaTest(compuesto, mPreguntas, mOpciones, l);
-                                                    this.setState({
-                                                        loading: false,
-                                                    });
-
-                                                })
-                                        })
-                                    return "";
                                 })
                                 this.setState({
                                     mapaTest: l,
@@ -104,6 +84,41 @@ class Test extends React.Component {
                     }
                 })
         }, 1000)
+    }
+
+    extraerCompuesto(compuesto, l) {
+        if (compuesto.tieneSubtemas === 1) {
+            fetch(`${process.env.REACT_APP_API}compuestos/${compuesto.id_hijo}`)
+                .then(data => {
+                    return data.json();
+                }).then(data => {
+                    data.result.map((compuesto, i) => {
+                        return this.extraerCompuesto(compuesto, i, l);
+                    })
+                })
+        } else {
+            var mPreguntas = [];
+            var mOpciones = [];
+            fetch(`${process.env.REACT_APP_API}opciones/${compuesto.id_hijo}`)
+                .then(data => {
+                    return data.json();
+                }).then(data => {
+                    mOpciones = data.result;
+
+                    fetch(`${process.env.REACT_APP_API}preguntas/${compuesto.id_hijo}`)
+                        .then(data => {
+                            return data.json();
+                        }).then(data => {
+                            mPreguntas = data.result;
+                            mPreguntas = data.result;
+                            this.crearMapaTest(compuesto, mPreguntas, mOpciones, l);
+                            this.setState({
+                                loading: false
+                            });
+
+                        })
+                })
+        }
     }
 
     formatPreguntas(mPreguntas, mOpciones) {
@@ -243,9 +258,9 @@ class Test extends React.Component {
             </Accordion>
         )
     }
+
     render() {
         return (
-
             this.state.loading ?
                 <Box sx={{ width: '90%', alignItems: "center", textAlign: "center" }}>
                     <CircularProgress />

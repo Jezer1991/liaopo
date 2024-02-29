@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Card, Alert, Button } from "react-bootstrap";
-import { CircularProgress, Box, Link, Breadcrumbs, Typography, Tooltip, Accordion, AccordionSummary, AccordionDetails} from '@mui/material';
+import { CircularProgress, Box, Link, Breadcrumbs, Typography, Tooltip, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import NoHayDatos from "./nohaydatos";
@@ -64,28 +64,7 @@ class Test extends React.Component {
                                 var totalSubtemas = data.result;
 
                                 totalSubtemas.map((compuesto, i) => {
-                                    var mPreguntas = [];
-                                    var mOpciones = [];
-                                    fetch(`${process.env.REACT_APP_API}opciones/${compuesto.id_hijo}`)
-                                        .then(data => {
-                                            return data.json();
-                                        }).then(data => {
-                                            mOpciones = data.result;
-
-                                            fetch(`${process.env.REACT_APP_API}preguntas/${compuesto.id_hijo}`)
-                                                .then(data => {
-                                                    return data.json();
-                                                }).then(data => {
-                                                    mPreguntas = data.result;
-                                                    mPreguntas = data.result;
-                                                    this.crearMapaTest(compuesto, mPreguntas, mOpciones, l);
-                                                    this.setState({
-                                                        loading: false
-                                                    });
-
-                                                })
-                                        })
-                                    return "";
+                                    return this.extraerCompuesto(compuesto, l);
                                 })
                                 this.setState({
                                     mapaTest: l
@@ -99,6 +78,41 @@ class Test extends React.Component {
                     }
                 })
         }, 1000)
+    }
+
+    extraerCompuesto(compuesto, l) {
+        if (compuesto.tieneSubtemas === 1) {
+            fetch(`${process.env.REACT_APP_API}compuestos/${compuesto.id_hijo}`)
+                .then(data => {
+                    return data.json();
+                }).then(data => {
+                    data.result.map((compuesto, i) => {
+                        return this.extraerCompuesto(compuesto, i, l);
+                    })
+                })
+        } else {
+            var mPreguntas = [];
+            var mOpciones = [];
+            fetch(`${process.env.REACT_APP_API}opciones/${compuesto.id_hijo}`)
+                .then(data => {
+                    return data.json();
+                }).then(data => {
+                    mOpciones = data.result;
+
+                    fetch(`${process.env.REACT_APP_API}preguntas/${compuesto.id_hijo}`)
+                        .then(data => {
+                            return data.json();
+                        }).then(data => {
+                            mPreguntas = data.result;
+                            mPreguntas = data.result;
+                            this.crearMapaTest(compuesto, mPreguntas, mOpciones, l);
+                            this.setState({
+                                loading: false
+                            });
+
+                        })
+                })
+        }
     }
 
     formatPreguntas(mPreguntas, mOpciones) {
@@ -172,7 +186,7 @@ class Test extends React.Component {
 
     pintarSupuesto(supuesto, i) {
         return (
-            <Accordion key={`S${i}`} defaultExpanded style={{ color: "rgb(1, 67, 97)", fontWeight: "400", padding: "10px"}}>
+            <Accordion key={`S${i}`} defaultExpanded style={{ color: "rgb(1, 67, 97)", fontWeight: "400", padding: "10px" }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header" > </AccordionSummary>
                 {supuesto.split("\\n").map((p, j) => {
                     return <p key={j}>{p}</p>
@@ -190,7 +204,7 @@ class Test extends React.Component {
                 </Box>
                 :
                 this.state.mapaTest === undefined || this.state.mapaTest.length <= 0 ?
-                    <React.Fragment key={"nHayDatos"} eventKey={"noHayDatos"}>
+                    <React.Fragment key={"nHayDatos"}>
                         <NoHayDatos message={"No hay bloques en este momento"} />
                     </React.Fragment>
                     : <Box sx={{ width: '90%' }} style={{ margin: "0px auto", marginTop: "30px", marginBottom: "50px" }}>
