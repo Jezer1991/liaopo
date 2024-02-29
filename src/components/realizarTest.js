@@ -289,7 +289,6 @@ class Test extends React.Component {
                             <ProgressBar label={`${this.state.porcentaje}%`} animated now={this.state.porcentaje} style={{ width: "50%", margin: "0px auto" }} />
                         </div>
                         <Timer />
-                        <h1>{this.state.totalPreguntas}</h1>
                         {this.state.mapaTest.map((test, i) => {
                             if (test.preguntas.length > 0) {
                                 return (
