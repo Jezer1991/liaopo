@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { Alert, Button } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
+import Button from '@mui/material/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Badge from 'react-bootstrap/Badge';
@@ -9,6 +10,11 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import Tooltip from '@mui/material/Tooltip';
+import Leyenda from './leyenda';
+import ReplayIcon from '@mui/icons-material/Replay';
+import CloseIcon from '@mui/icons-material/Close';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -83,8 +89,9 @@ class ModalResumen extends React.Component {
         var { resumen, correctas, incorrectas } = this.props;
         return (
             <React.Fragment>
-                <Button className="mt-5" style={{ width: "100%" }} onClick={this.handleShow}>Finalizar</Button>
-
+                <div style={{ textAlign: "center" }}>
+                    <Button variant="contained" color="success" style={{ width: "50%", margin: "0px auto" }} onClick={this.handleShow}>Finalizar</Button>
+                </div>
                 <Modal show={this.state.show} onHide={this.handleClose}
                     size="xl"
                     aria-labelledby="contained-modal-title-vcenter"
@@ -109,7 +116,7 @@ class ModalResumen extends React.Component {
                                     </h5>
                                 </Col>
                             </Row>
-
+                            <Row><Leyenda /></Row>
                             <Row>
                                 <Tabs defaultActiveKey={0} id="uncontrolled-tab-example" className="mb-3">
 
@@ -118,7 +125,14 @@ class ModalResumen extends React.Component {
                                             <Tab eventKey={i} key={i} title={test.test.nombre_test}>
                                                 {test.preguntas.map((pregunta, e) => {
                                                     return <Accordion defaultExpanded key={e} style={{ borderRadius: "10px", color: "rgb(1, 67, 97)", fontWeight: "400", marginBottom: "5px" }}>
-                                                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2-content" id="panel2-header" > {pregunta.pregunta.nombre}</AccordionSummary>
+                                                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2-content" id="panel2-header" >
+                                                            {pregunta.pregunta.nombre}
+                                                            {pregunta.pregunta.anulada === 1 ?
+                                                                <Tooltip title="Esta pregunta fue eliminada del examen">
+                                                                    <PriorityHighIcon color="warning" />
+                                                                </Tooltip>
+                                                                : ""}
+                                                        </AccordionSummary>
                                                         <AccordionDetails>
                                                             {pregunta.opciones.opcionSeleccionada.id_opcion === pregunta.opciones.opcionCorrecta.id_opcion ?
                                                                 <Alert style={{ background: "rgb(237, 247, 237)", borderColor: "rgb(237, 247, 237)" }}>{pregunta.opciones.opcionCorrecta.opcion}<CheckCircleOutlineIcon /></Alert>
@@ -140,10 +154,10 @@ class ModalResumen extends React.Component {
                         </Container>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleClose}>
-                            Close
+                        <Button className="m-2" variant="contained" color="secondary" startIcon={<CloseIcon />} onClick={this.handleClose}>
+                            Cerrar
                         </Button>
-                        <Button variant="warning" onClick={() => { window.location.reload(true); }}>
+                        <Button variant="contained" color="success" startIcon={<ReplayIcon />} onClick={() => { window.location.reload(true); }}>
                             Volver a empezar el test
                         </Button>
                     </Modal.Footer>

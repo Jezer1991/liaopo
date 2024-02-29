@@ -123,12 +123,7 @@ class Test extends React.Component {
 
     formatPreguntas(mPreguntas, mOpciones) {
         var auxPreguntas = [];
-        var cont = this.state.totalPreguntas;
-
-        mPreguntas.map(pregunta => {
-            if (pregunta.anulada === 0) {
-                cont++;
-            }
+        mPreguntas.map(pregunta => {    
             return auxPreguntas.push({
                 anho: pregunta.anho,
                 annho: pregunta.annho,
@@ -142,7 +137,7 @@ class Test extends React.Component {
             })
         })
         this.setState({
-            totalPreguntas: cont
+            totalPreguntas: this.state.totalPreguntas+ mPreguntas.length
         })
         return auxPreguntas;
     }
@@ -218,7 +213,7 @@ class Test extends React.Component {
         }
         al.classList.remove("alert-primary");
         al.classList.add("alert-secondary");
-        var porcentajeActual = ((correctas+incorrectas) * 100) / this.state.totalPreguntas;
+        var porcentajeActual = ((correctas + incorrectas) * 100) / this.state.totalPreguntas;
 
         this.setState({
             porcentaje: Math.round(porcentajeActual),
@@ -236,9 +231,7 @@ class Test extends React.Component {
                     {
                         pregunta.opciones.map((opcion, e) => {
                             return (
-                                pregunta.anulada === 0 ?
-                                    <Alert style={{ cursor: "pointer" }} onClick={() => this.respuestaSeleccionada(i, tipoAcordion, e)} key={e} id={`A${tipoAcordion}P${i}O${e}`}>{opcion.opcion}</Alert>
-                                    : <Alert key={e} id={`P${i}O${e}`}>{opcion.opcion}</Alert>
+                                <Alert style={{ cursor: "pointer" }} onClick={() => this.respuestaSeleccionada(i, tipoAcordion, e)} key={e} id={`A${tipoAcordion}P${i}O${e}`}>{opcion.opcion}</Alert>
                             )
                         })
                     }
@@ -296,7 +289,7 @@ class Test extends React.Component {
                             <ProgressBar label={`${this.state.porcentaje}%`} animated now={this.state.porcentaje} style={{ width: "50%", margin: "0px auto" }} />
                         </div>
                         <Timer />
-
+                        <h1>{this.state.totalPreguntas}</h1>
                         {this.state.mapaTest.map((test, i) => {
                             if (test.preguntas.length > 0) {
                                 return (

@@ -53,6 +53,7 @@ b) Mediante aval prestado por una entidad bancaria.
 c) Mediante el título conformado de propiedad de bienes inmuebles incluyendo una tasación independiente de los mismos realizada dentro de los tres meses inmediatamente anteriores al día de prestar la garantía.  
 d) Mediante contrato de seguro de caución.
 Respuesta correcta: c) 
+
 //////Examen 2023
 De acuerdo con el artículo 75 de la Constitución Española de 1978 (en adelante CE), ¿qué proyectos o proposiciones de ley NO podrán ser objeto de delegación de las Cámaras para su aprobación en las Comisiones Legislativas Permanentes? 
 a) Las leyes de contenido económico. 
@@ -323,7 +324,8 @@ a) El Real Decreto 127/2015 integra los centros de Ventanilla Única Empresarial
 b)CIRCE es el acrónimo de Centro de Información y Red de Creación de Empresas.  
 c)La plataforma «Emprende en 3» queda integrada en el PAE electrónico. 
 d)La constitución telemática de sociedades de responsabilidad limitada mediante un único procedimiento aún no es posible en España.
-Respuesta correcta: x)
+Respuesta correcta: d)
+
 //////Examen 2023
 ¿Se puede limitar con alguna propiedad los valores que se introducen en un campo en una tabla de Access? 
 a) Con texto precalculado.                  
@@ -434,7 +436,7 @@ a) Los números almacenados como números se ordenarán antes que los números a
 b) Los números almacenados como texto se ordenarán antes que los números almacenados como números. 
 c) Excel devolverá un error indicando que no se pueden ordenar. 
 d) Excel convertirá automáticamente los números almacenados como texto y los ordenará.
-Respuesta correcta: x)
+Respuesta correcta: a)
 
 //////Examen 2023
 Cuál de las siguientes opciones sobre Microsoft Access 2019 es correcta: 
@@ -450,7 +452,7 @@ a) Un campo de Texto largo puede contener hasta 65.535 caracteres.
 b) Los campos de clave principal pueden contener un valor Null. 
 c) Permite crear gráficos de columnas, barras, líneas, circulares y combinados. 
 d) El número máximo de caracteres del nombre de un objeto es 64.
-Respuesta correcta: x)
+Respuesta correcta: b)
  
 //////Examen 2023
 Al diseñar una tabla de Access, en el campo FechaAlta incluimos la siguiente Regla de validación (sin las comillas): ">=Fecha()", ¿qué efecto tendrá la regla? 
@@ -498,7 +500,7 @@ a) Ctrl + 2
 b) Ctrl + F 
 c) Ctrl + D       
 d) Crtl + U 
-Respuesta correcta: x)
+Respuesta correcta: c)
 
 //////Examen 2023
 ¿Qué es Outlook 2019? 
@@ -555,6 +557,3 @@ b) ROM
 c) Caché        
 d) Flash 
 Respuesta correcta: c) 
-
-
-

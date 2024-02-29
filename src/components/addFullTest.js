@@ -125,7 +125,6 @@ class AddFullTest extends React.Component {
 
                                 a1.map((t, e) => {
                                     var aux = t.substr(test.indexOf("d)"));
-                                    console.log(aux);
                                     var le = t.substr(aux.indexOf("d)"), aux.indexOf(".") + 1);
                                     var start = t.indexOf("Examen");
                                     var final = t.indexOf("d)") + le.length;
@@ -149,7 +148,7 @@ class AddFullTest extends React.Component {
                                             anho: partes[0].substr(partes[0].length - 4, partes[0].length)
                                         })
                                     };
-
+                                    console.log(partes[0].substr(partes[0].length - 4, partes[0].length));
                                     fetch(`${process.env.REACT_APP_API}anho`, requestOptionsAnho)
                                         .then(data => {
                                             return data.json();
@@ -182,6 +181,7 @@ class AddFullTest extends React.Component {
 
                                                     for (var aux = init; aux <= partes.length - 2; aux++) {
                                                         var actualOpcion = partes[aux].substr(0, 1);
+                                                        console.log("Opcion ", actualOpcion, " de la pregunta ", idPregunta);
                                                         const requestOptionsOpcion = {
                                                             method: 'POST',
                                                             headers: { 'Content-Type': 'application/json' },

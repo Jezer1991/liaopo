@@ -157,14 +157,12 @@ class Test extends React.Component {
         return (
             <Accordion defaultExpanded key={i} id={i} style={{ borderRadius: "10px", color: "rgb(1, 67, 97)", fontWeight: "400", marginBottom: "5px" }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2-content" id="panel2-header" > {pregunta.nombre}</AccordionSummary>
-                {pregunta.anulada === 0 ?
-                    <Tooltip title="Ver la respuesta correcta" >
-                        <Button style={{ marginLeft: "18px", background: "rgb(255, 244, 229)", borderColor: "rgb(255, 244, 229)", color: "rgb(102, 60, 0)" }}
-                            onClick={(e) => { this.mostrarRespuesta(`c${tipoAcordion}${i}`) }}>
-                            <TipsAndUpdatesIcon />
-                        </Button>
-                    </Tooltip> : ""
-                }
+                <Tooltip title="Ver la respuesta correcta" >
+                    <Button style={{ marginLeft: "18px", background: "rgb(255, 244, 229)", borderColor: "rgb(255, 244, 229)", color: "rgb(102, 60, 0)" }}
+                        onClick={(e) => { this.mostrarRespuesta(`c${tipoAcordion}${i}`) }}>
+                        <TipsAndUpdatesIcon />
+                    </Button>
+                </Tooltip>
                 <AccordionDetails>
                     {
                         pregunta.opciones.map((opcion, e) => {
